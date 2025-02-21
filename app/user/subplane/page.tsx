@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, RefreshCw, CreditCard } from "lucide-react";
 
 export default function SubscriptionInfoPage() {
-  const [subscription, setSubscription] = useState({
+  const [subscription] = useState({
     plan: "Premium",
     price: 19.99,
     expiry: "March 15, 2025",

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, DollarSign, List, User } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const ChefDashboard = () => {
   const chefData = {
@@ -27,10 +27,12 @@ const ChefDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="flex items-center gap-4">
-            <img
+            <Image
               src={chefData.profilePic}
               alt="Chef Profile"
               className="w-16 h-16 rounded-full"
+              width={64}
+              height={64}
             />
             <div>
               <h3 className="text-lg font-semibold">{chefData.name}</h3>

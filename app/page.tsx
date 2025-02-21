@@ -9,7 +9,7 @@ export default function Home() {
         <nav className="flex justify-between items-center mb-16">
           <div className="flex items-center gap-2">
             <ChefHat className="h-8 w-8" />
-            <span className="text-2xl font-bold">HomeMade</span>
+            <span className="text-2xl font-bold">CloudChef</span>
           </div>
           <div className="flex gap-4">
             <Button variant="ghost" asChild>
@@ -45,19 +45,19 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
-            <div className="bg-card p-6 rounded-lg">
+            <div className="bg-card p-6 rounded-lg shadow-sm">
               <h3 className="text-xl font-semibold mb-2">Fresh & Authentic</h3>
               <p className="text-muted-foreground">
                 Enjoy real homemade food cooked with love and care by local chefs.
               </p>
             </div>
-            <div className="bg-card p-6 rounded-lg">
+            <div className="bg-card p-6 rounded-lg shadow-sm">
               <h3 className="text-xl font-semibold mb-2">Support Local</h3>
               <p className="text-muted-foreground">
                 Help local chefs grow their business while enjoying great food.
               </p>
             </div>
-            <div className="bg-card p-6 rounded-lg">
+            <div className="bg-card p-6 rounded-lg shadow-sm">
               <h3 className="text-xl font-semibold mb-2">Easy Ordering</h3>
               <p className="text-muted-foreground">
                 Browse menus, place orders, and track delivery in real-time.

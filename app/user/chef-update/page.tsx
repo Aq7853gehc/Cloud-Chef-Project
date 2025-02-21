@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, ChefHat } from "lucide-react";
+import Image from "next/image";
 
 // Sample Chef Updates Data
 const chefUpdates = [
@@ -43,7 +43,7 @@ export default function ChefUpdates() {
           <Card key={chef.id}>
             <CardHeader>
               <div className="flex items-center gap-4">
-                <img src={chef.imageUrl} alt={chef.name} className="w-12 h-12 rounded-full" />
+                <Image src={chef.imageUrl} alt={chef.name} className="w-12 h-12 rounded-full" width={48} height={48} />
                 <div>
                   <CardTitle>{chef.name}</CardTitle>
                   <div className="flex items-center text-yellow-500">
@@ -56,7 +56,7 @@ export default function ChefUpdates() {
               </div>
             </CardHeader>
             <CardContent>
-              <img src={chef.dishImage} alt={chef.latestDish} className="w-full h-40 object-cover rounded-md" />
+              <Image src={chef.dishImage} alt={chef.latestDish} className="w-full h-40 object-cover rounded-md" height={160} width={160}/>
               <p className="mt-3 text-gray-800 font-medium">Latest Dish: {chef.latestDish}</p>
             </CardContent>
           </Card>

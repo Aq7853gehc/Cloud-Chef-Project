@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Plus, Minus, Search, Filter } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 type MenuItem = {
   id: string;
@@ -88,7 +89,7 @@ export default function MenuPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredMenu.map((item) => (
               <div key={item.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <img src={item.imageUrl} alt={item.name} className="w-full h-52 object-cover" />
+                <Image src={item.imageUrl} alt={item.name} className="w-full h-52 object-cover" width={208} height={208}/>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
                   <p className="text-gray-600 text-sm mt-1">{item.description}</p>
@@ -114,7 +115,7 @@ export default function MenuPage() {
               <div className="space-y-4 h-fit">
                 {cart.map((item) => (
                   <div key={item.id} className="flex items-center justify-between border-b pb-3">
-                    <img src={item.imageUrl} alt={item.name} className="w-12 h-12 object-cover rounded-md" />
+                    <Image src={item.imageUrl} alt={item.name} className="w-12 h-12 object-cover rounded-md" width={48} height={48} />
                     <div className="flex-1 pl-3">
                       <h4 className="text-gray-900 font-medium">{item.name}</h4>
                       <p className="text-gray-500 text-sm">${item.price.toFixed(2)} x {item.quantity}</p>

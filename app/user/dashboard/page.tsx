@@ -3,6 +3,7 @@
 import { User, CreditCard, ShoppingCart } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const UserDashboard = () => {
   const user = {
@@ -27,7 +28,7 @@ const UserDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="flex items-center gap-4">
-            <img src={user.profilePic} alt="Profile" className="w-16 h-16 rounded-full" />
+            <Image src={user.profilePic} alt="Profile" className="w-16 h-16 rounded-full" width={64} height={64}/>
             <div>
               <h3 className="text-lg font-semibold">{user.name}</h3>
               <p className="text-gray-600 text-sm">{user.email}</p>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 type CartItem = {
   id: string;
@@ -66,10 +67,12 @@ export default function PlaceOrder() {
                 key={item.id}
                 className="flex items-center justify-between border-b pb-3"
               >
-                <img
+                <Image
                   src={item.imageUrl}
                   alt={item.name}
                   className="w-14 h-14 object-cover rounded-md"
+                  width={0}
+                  height={0}
                 />
                 <div className="flex-1 pl-3">
                   <h4 className="text-gray-900 font-medium">{item.name}</h4>

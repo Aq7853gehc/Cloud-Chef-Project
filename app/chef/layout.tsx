@@ -26,7 +26,7 @@ const items = [
   },
   {
     title: "Reviews & Ratings",
-    url: "/chef/reviews",
+    url: "/chef/review",
     icon: ClipboardList,
   },
   {
@@ -45,7 +45,7 @@ const ChefLayout = ({
   return (
     <SidebarProvider>
     <AppSidebar items={items}/>
-    <main className='flex w-full gap-2'>
+    <main className='flex w-full h-full  gap-2'>
       <SidebarTrigger />
       {children}
     </main>

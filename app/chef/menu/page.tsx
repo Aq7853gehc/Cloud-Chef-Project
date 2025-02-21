@@ -21,7 +21,7 @@ const initialMenu: MenuItem[] = [
 
 const ChefMenuManagement: React.FC = () => {
   const [menu, setMenu] = useState<MenuItem[]>(initialMenu);
-  const [newItem, setNewItem] = useState<MenuItem>({ id: "", name: "", description: "", price: 0 });
+  const [newItem, setNewItem] = useState<MenuItem>({ id: "", name: "", description: "", price: 5 });
 
   const addMenuItem = () => {
     if (newItem.name && newItem.description && newItem.price) {
@@ -42,7 +42,7 @@ const ChefMenuManagement: React.FC = () => {
         <div className="flex flex-col gap-3">
           <Input placeholder="Item Name" value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} />
           <Textarea placeholder="Description" value={newItem.description} onChange={(e) => setNewItem({ ...newItem, description: e.target.value })} />
-          <Input type="number" placeholder="Price" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) || 0 })} />
+          <Input type="text" placeholder="Price" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) || 0 })} />
           <Button onClick={addMenuItem} className="bg-green-600 text-white hover:bg-green-500 flex items-center">
             <Plus className="w-4 h-4 mr-2" /> Add Item
           </Button>
