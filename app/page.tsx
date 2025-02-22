@@ -12,13 +12,13 @@ export default function Home() {
       {/* Navbar */}
       <nav className="w-full bg-white shadow-md p-4 fixed top-0 z-50 flex justify-between items-center px-6 md:px-12">
         <div className="flex items-center gap-3 text-2xl font-bold text-gray-800">
-          <ChefHat className="h-8 w-8 text-yellow-500" /> CloudChef
+          <ChefHat className="h-8 w-8 text-green-500" /> CloudChef
         </div>
         <div className="flex gap-4">
-          <Button variant="ghost" className="text-gray-700 hover:text-yellow-500" asChild>
+          <Button variant="ghost" className="text-gray-700 hover:text-green-500" asChild>
             <Link href="/auth/login">Login</Link>
           </Button>
-          <Button className="bg-yellow-500 hover:bg-yellow-400 text-white" asChild>
+          <Button className="bg-green-500 hover:bg-green-400 text-white" asChild>
             <Link href="/auth/register">Sign Up</Link>
           </Button>
         </div>
@@ -28,18 +28,18 @@ export default function Home() {
       <section className="w-full text-center pt-24 pb-16 px-6 md:px-12 flex flex-col items-center">
         <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <h1 className="text-5xl font-extrabold mb-6 leading-tight text-gray-900">
-            Delicious <span className="text-yellow-500">Homemade</span> Meals at Your Doorstep
+            Delicious <span className="text-green-500">Homemade</span> Meals at Your Doorstep
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
             Discover and order freshly made meals from talented home chefs around you.
           </p>
           <div className="flex justify-center gap-6">
-            <Button size="lg" className="bg-yellow-500 hover:bg-yellow-400 text-white gap-2" asChild>
+            <Button size="lg" className="bg-green-500 hover:bg-green-400 text-white gap-2" asChild>
               <Link href="/user/dashboard">
                 Order Now <UtensilsCrossed className="h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white gap-2" asChild>
+            <Button size="lg" variant="outline" className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white gap-2" asChild>
               <Link href="/chef/dashboard">
                 Become a Chef <ChefHat className="h-5 w-5" />
               </Link>
@@ -66,7 +66,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: index * 0.2 }}
             className="p-6 rounded-xl bg-white shadow-lg text-center border border-gray-200"
           >
-            <h3 className="text-xl font-semibold text-yellow-500 mb-2">{feature.title}</h3>
+            <h3 className="text-xl font-semibold text-green-500 mb-2">{feature.title}</h3>
             <p className="text-gray-600">{feature.desc}</p>
           </motion.div>
         ))}
