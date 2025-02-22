@@ -27,6 +27,12 @@ const items = [
     url: "/user/order",
     icon: Package,
   },
+
+  {
+    title: "Chefs",
+    url: "/user/chefs",
+    icon: ChefHat,
+  },
   {
     title: "Chef Update",
     url: "/user/chef-update",
