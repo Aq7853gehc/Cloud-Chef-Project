@@ -1,10 +1,9 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ShoppingBag, Star, Heart, MessageSquare, Truck, User } from "lucide-react";
+import { ShoppingBag, Star, Heart, Truck, User } from "lucide-react";
 
 export default function CustomerDashboard() {
   const pastOrders = [

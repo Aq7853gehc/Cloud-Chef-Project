@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
+import Image from "next/image";
 
 const chefs = [
   { id: 1, name: "Gordon Ramsay", specialty: "British Cuisine", rating: 4.9, img: "/images/chef.jpg" },
@@ -20,7 +21,7 @@ export default function ChefsPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {chefs.map((chef) => (
           <Card key={chef.id} className="p-4 flex flex-col items-center text-center">
-            <img src={chef.img} alt={chef.name} className="h-24 w-24 rounded-full object-cover mb-2" />
+            <Image src={chef.img} alt={chef.name} className="h-24 w-24 rounded-full object-cover mb-2" height={96} width={96}/>
             <h2 className="text-xl font-semibold">{chef.name}</h2>
             <p className="text-muted-foreground">{chef.specialty}</p>
             <div className="flex items-center mt-2">
