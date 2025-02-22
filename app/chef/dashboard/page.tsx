@@ -17,7 +17,7 @@ import Link from "next/link";
 
 export default function Dashboard() {
   const recipes = [
-    { name: "Beef Wellington", rating: 4.8, reviews: 156 },
+    { name: "Razma Chaval", rating: 4.8, reviews: 156 },
     { name: "Coq au Vin", rating: 4.7, reviews: 98 },
     { name: "Risotto al Funghi", rating: 4.9, reviews: 203 },
   ];

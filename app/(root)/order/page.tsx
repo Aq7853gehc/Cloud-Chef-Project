@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 type CartItem = {
@@ -50,16 +51,24 @@ export default function PlaceOrder() {
   };
 
   return (
-    <div className="container mx-auto max-w-3xl p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-900">
+    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col items-center px-6 py-12">
+      <motion.h2 
+        initial={{ opacity: 0, y: -50 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.8 }}
+        className="text-3xl font-bold mb-6 text-gray-900"
+      >
         Place Your Order
-      </h2>
+      </motion.h2>
 
       {/* Order Summary */}
-      <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h3 className="text-xl font-semibold mb-4 text-gray-900">
-          Order Summary
-        </h3>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }} 
+        animate={{ opacity: 1, scale: 1 }} 
+        transition={{ duration: 0.6 }}
+        className="bg-white shadow-lg rounded-xl p-6 mb-6 w-full max-w-3xl"
+      >
+        <h3 className="text-xl font-semibold mb-4 text-gray-900">Order Summary</h3>
         <div className="space-y-4">
           {cart.length > 0 ? (
             cart.map((item) => (
@@ -95,13 +104,16 @@ export default function PlaceOrder() {
             ${cartTotal.toFixed(2)}
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* User Details Form */}
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h3 className="text-xl font-semibold mb-4 text-gray-900">
-          Delivery Details
-        </h3>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }} 
+        animate={{ opacity: 1, scale: 1 }} 
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="bg-white shadow-lg rounded-xl p-6 w-full max-w-3xl"
+      >
+        <h3 className="text-xl font-semibold mb-4 text-gray-900">Delivery Details</h3>
         <div className="space-y-4">
           <input
             type="text"
@@ -109,7 +121,7 @@ export default function PlaceOrder() {
             value={userDetails.name}
             onChange={handleInputChange}
             placeholder="Full Name"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
           />
           <input
             type="text"
@@ -117,7 +129,7 @@ export default function PlaceOrder() {
             value={userDetails.address}
             onChange={handleInputChange}
             placeholder="Delivery Address"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
           />
           <input
             type="text"
@@ -125,20 +137,25 @@ export default function PlaceOrder() {
             value={userDetails.phone}
             onChange={handleInputChange}
             placeholder="Phone Number"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
           />
         </div>
-      </div>
+      </motion.div>
 
       {/* Place Order Button */}
-      <div className="mt-6">
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="mt-6 w-full max-w-3xl"
+      >
         <Button
-          className="w-full bg-gray-900 text-white px-4 py-3 rounded-lg hover:bg-gray-800"
+          className="w-full bg-yellow-500 text-white px-4 py-3 rounded-lg hover:bg-yellow-400"
           onClick={placeOrder}
         >
           Place Order
         </Button>
-      </div>
+      </motion.div>
     </div>
   );
 }
