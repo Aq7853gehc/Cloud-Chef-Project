@@ -36,7 +36,7 @@ const ChefMenuManagement: React.FC = () => {
 
   return (
     <div className="container mx-auto px-6 py-8">
-      <h2 className="text-3xl font-bold mb-6 text-gray-900 text-center">Menu Management</h2>
+      <h2 className="text-4xl font-bold mb-6 text-gray-900 text-center">Menu Management</h2>
       <div className="mb-6 bg-white shadow-md p-4 rounded-lg">
         <h3 className="text-xl font-semibold mb-4">Add New Menu Item</h3>
         <div className="flex flex-col gap-3">

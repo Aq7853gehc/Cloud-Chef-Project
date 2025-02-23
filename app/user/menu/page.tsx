@@ -95,7 +95,7 @@ export default function MenuPage() {
                   <p className="text-gray-600 text-sm mt-1">{item.description}</p>
                   <div className="flex items-center justify-between mt-4">
                     <span className="text-xl font-semibold text-gray-900">${item.price.toFixed(2)}</span>
-                    <Button className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800" onClick={() => addToCart(item)}>
+                    <Button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-500" onClick={() => addToCart(item)}>
                       <Plus className="w-4 h-4 mr-2" /> Add
                     </Button>
                   </div>
@@ -138,7 +138,7 @@ export default function MenuPage() {
                   <span className="text-xl font-bold text-gray-900">${cartTotal.toFixed(2)}</span>
                 </div>
                 <Link href="/order">
-                  <Button className="w-full bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800">Checkout</Button>
+                  <Button className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-500">Checkout</Button>
                 </Link>
               </div>
             </>

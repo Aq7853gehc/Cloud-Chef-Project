@@ -3,7 +3,7 @@
 import { useState, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User, Lock, Bell } from "lucide-react";
+import { User, Lock, Bell, Settings } from "lucide-react";
 
 interface UserInfo {
   name: string;
@@ -48,13 +48,13 @@ export default function ProfileSettingsPage() {
 
   return (
     <div className="container mx-auto px-4 py-10 max-w-2xl bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-900 flex items-center gap-2">
-        <User className="w-6 h-6" /> Profile & Settings
+      <h2 className="text-5xl font-bold mb-6 text-gray-900 flex items-center gap-2">
+       <Settings className="w-8 h-8"/>  Profile & Settings
       </h2>
 
       {/* Personal Info Section */}
       <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-3 text-gray-900">Personal Info</h3>
+        <h3 className="text-3xl font-semibold mb-3 text-gray-600 flex gap-2 items-center"> <User className="w-6 h-6" />Personal Info</h3>
         <Input
           name="name"
           value={userInfo.name}
@@ -87,7 +87,7 @@ export default function ProfileSettingsPage() {
 
       {/* Password Update Section */}
       <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-3 text-gray-900 flex items-center gap-2">
+        <h3 className="text-3xl font-semibold mb-3 text-gray-600 flex items-center gap-2">
           <Lock className="w-5 h-5" /> Change Password
         </h3>
         <Input
@@ -100,10 +100,10 @@ export default function ProfileSettingsPage() {
 
       {/* Notifications Settings */}
       <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-3 text-gray-900 flex items-center gap-2">
+        <h3 className="text-3xl font-semibold  text-gray-600 flex items-center gap-2 mb-3">
           <Bell className="w-5 h-5" /> Notification Settings
         </h3>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 ">
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -135,7 +135,7 @@ export default function ProfileSettingsPage() {
       </div>
 
       {/* Save Button */}
-      <Button className="w-full bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+      <Button className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-gray-800">
         Save Changes
       </Button>
     </div>

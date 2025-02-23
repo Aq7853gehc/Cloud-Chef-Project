@@ -36,12 +36,12 @@ export default function Home() {
           <div className="flex justify-center gap-6">
             <Button size="lg" className="bg-green-500 hover:bg-green-400 text-white gap-2" asChild>
               <Link href="/user/dashboard">
-                Order Now <UtensilsCrossed className="h-5 w-5" />
+                Customer <UtensilsCrossed className="h-5 w-5" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white gap-2" asChild>
               <Link href="/chef/dashboard">
-                Become a Chef <ChefHat className="h-5 w-5" />
+                Chef? Enroll <ChefHat className="h-5 w-5" />
               </Link>
             </Button>
           </div>

@@ -16,6 +16,9 @@ const ordersData: Order[] = [
   { id: "101", customer: "Alice Johnson", item: "Grilled Salmon", status: "Pending" },
   { id: "102", customer: "Michael Smith", item: "Pasta Carbonara", status: "In Progress" },
   { id: "103", customer: "Emma Brown", item: "Caesar Salad", status: "Completed" },
+  { id: "104", customer: "Alice Johnson", item: "Grilled Salmon", status: "Pending" },
+  { id: "105", customer: "Michael Smith", item: "Pasta Carbonara", status: "In Progress" },
+  { id: "106", customer: "Emma Brown", item: "Caesar Salad", status: "Pending" },
 ];
 
 const ChefOrderManagement: React.FC = () => {
@@ -31,12 +34,12 @@ const ChefOrderManagement: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 text-center">Order Management</h2>
+      <h2 className="text-5xl sm:text-3xl font-bold mb-6 text-gray-900 text-center">Order Management</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((order) => (
           <Card key={order.id} className="bg-white shadow-md rounded-lg p-4 transition-transform transform hover:scale-105">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-center">Order #{order.id}</CardTitle>
+              <CardTitle className="text-xl font-semibold text-center">Order #{order.id}</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-gray-700 font-medium">Customer: {order.customer}</p>
