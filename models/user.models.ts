@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  username: {
+  fullname: {
     type: String,
     required: true,
     unique: true,
@@ -19,6 +19,19 @@ const userSchema = new mongoose.Schema({
     enum: ["customer", "chef"],
     require: true,
   },
+  address: {
+    type: String,
+    require: true,
+  },
+  bio:{
+    type:String,
+    require:false
+  },
+  cart:{
+    type: Schema.Types.ObjectId,
+    ref: "Cart"
+  },
+  
 });
 
-export const User = mongoose.model("User", userSchema);
+export  const User = mongoose.model("User", userSchema);
