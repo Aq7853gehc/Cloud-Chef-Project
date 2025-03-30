@@ -16,7 +16,7 @@ const chefs = [
     rating: 4.9,
     img: "/images/chef.jpg",
     location: "London, UK",
-    experience: "20+ years",
+    exp: "20+ years",
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const chefs = [
     rating: 4.8,
     img: "/images/chef.jpg",
     location: "Modena, Italy",
-    experience: "25+ years",
+    exp: "25+ years",
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const chefs = [
     rating: 4.7,
     img: "/images/chef.jpg",
     location: "San Francisco, USA",
-    experience: "15+ years",
+    exp: "15+ years",
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const chefs = [
     rating: 4.9,
     img: "/images/chef.jpg",
     location: "London, UK",
-    experience: "20+ years",
+    exp: "20+ years",
   },
   {
     id: 5,
@@ -52,7 +52,7 @@ const chefs = [
     rating: 4.8,
     img: "/images/chef.jpg",
     location: "Modena, Italy",
-    experience: "25+ years",
+    exp: "25+ years",
   },
   {
     id: 6,
@@ -61,7 +61,7 @@ const chefs = [
     rating: 4.7,
     img: "/images/chef.jpg",
     location: "San Francisco, USA",
-    experience: "15+ years",
+    exp: "15+ years",
   },
 ];
 
@@ -105,7 +105,9 @@ export default function ChefsPage() {
                   </Badge>
                 </div>
                 <div className="p-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{chef.name}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    {chef.name}
+                  </h2>
                   <p className="text-lg text-gray-600 mb-4">{chef.specialty}</p>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
@@ -114,7 +116,7 @@ export default function ChefsPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-primary" />
-                      <span>{chef.experience} experience</span>
+                      <span>{chef.exp} exp</span>
                     </div>
                   </div>
                   <Button

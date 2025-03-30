@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,25 +15,31 @@ import {
 } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Mail, Lock, ChefHat, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
   const [role, setRole] = useState<"chef" | "customer">("chef"); // Default role is 'chef'
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", { role, ...formData });
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      console.log("errror,", result.error);
+    } else {
+      if (role === "chef") {
+        router.push("/chef/dashboar");
+      } else {
+        router.push("/user/dashboard");
+      }
+    }
     // Add your form submission logic here (e.g., API call to log in the user)
   };
 
@@ -96,8 +103,8 @@ const LoginPage: React.FC = () => {
                 type="email"
                 id="email"
                 name="email"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="bg-white/80 backdrop-blur-sm"
                 required
@@ -117,8 +124,8 @@ const LoginPage: React.FC = () => {
                 type="password"
                 id="password"
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 className="bg-white/80 backdrop-blur-sm"
                 required
@@ -137,7 +144,7 @@ const LoginPage: React.FC = () => {
         <CardFooter className="flex justify-center p-6 bg-green-50/50 border-t border-white/20">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-green-600 hover:underline">
+            <Link href="/signup" className="text-green-600 hover:underline">
               Register here
             </Link>
           </p>

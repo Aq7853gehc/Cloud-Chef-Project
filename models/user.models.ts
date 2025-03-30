@@ -1,37 +1,51 @@
-import mongoose, { Schema } from "mongoose";
+// @ts-nocheck
+import mongoose, { model, Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  fullname: {
+const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
     type: String,
     required: true,
     unique: true,
   },
-  email: {
+  password: {
     type: String,
-    require: true,
-  },
-  passoword: {
-    type: String,
-    require: true,
-  },
-  role: {
-    type: String,
-    enum: ["customer", "chef"],
-    require: true,
+    required: true,
   },
   address: {
     type: String,
-    require: true,
   },
-  bio:{
-    type:String,
-    require:false
+  role: {
+    type: String,
+    enums: ["chef", "customer"],
+    default: "customer",
+    required: true,
   },
-  cart:{
-    type: Schema.Types.ObjectId,
-    ref: "Cart"
+  phone: {
+    type: String,
+    required: true,
   },
-  
+  specialty: {
+    type: String,
+    required: function () {
+      return this.role === "chef";
+    },
+  },
+  exp: {
+    type: Number,
+    required: function () {
+      return this.role === "chef";
+    },
+  },
+  bio: {
+    type: String,
+    required: function () {
+      return this.role === "chef";
+    },
+  },
 });
 
-export  const User = mongoose.model("User", userSchema);
+export const User = mongoose.models?.User || model("User", userSchema);

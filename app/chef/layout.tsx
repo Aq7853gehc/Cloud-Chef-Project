@@ -2,6 +2,9 @@ import React from 'react'
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Home, Utensils, Package, ClipboardList, DollarSign, Settings } from "lucide-react";
+import { getServerSession } from 'next-auth';
+import { authOption } from '@/auth';
+import { redirect } from 'next/navigation';
 
 const items = [
   {
@@ -42,6 +45,10 @@ const ChefLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const session = getServerSession(authOption);
+  if (!session){
+    redirect("/login")
+  }
   return (
     <SidebarProvider>
     <AppSidebar items={items}/>

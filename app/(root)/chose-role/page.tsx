@@ -1,5 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
 const ChoseRole = () => {
   return (
@@ -12,22 +12,32 @@ const ChoseRole = () => {
           {/* Chef Role Card */}
           <Link href="/chef/auth/register">
             <div className="group cursor-pointer p-6 bg-green-50 rounded-xl hover:bg-green-100 transition-all duration-300 border-2 border-green-200 hover:border-green-400">
-              <h2 className="text-2xl font-semibold text-green-800 mb-2">Chef</h2>
-              <p className="text-gray-600">Create and manage your recipes, share your culinary skills with the world!</p>
+              <h2 className="text-2xl font-semibold text-green-800 mb-2">
+                Chef
+              </h2>
+              <p className="text-gray-600">
+                Create and manage your recipes, share your culinary skills with
+                the world!
+              </p>
             </div>
           </Link>
 
           {/* Customer Role Card */}
           <Link href="/customer-login">
             <div className="group cursor-pointer p-6 bg-green-50 rounded-xl hover:bg-green-100 transition-all duration-300 border-2 border-green-200 hover:border-green-400">
-              <h2 className="text-2xl font-semibold text-green-800 mb-2">Customer</h2>
-              <p className="text-gray-600">Explore delicious recipes, order meals, and enjoy the best culinary experiences!</p>
+              <h2 className="text-2xl font-semibold text-green-800 mb-2">
+                Customer
+              </h2>
+              <p className="text-gray-600">
+                Explore delicious recipes, order meals, and enjoy the best
+                culinary exps!
+              </p>
             </div>
           </Link>
         </div>
 
         <p className="text-gray-500 mt-8 text-sm">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link href="/login" className="text-green-600 hover:underline">
             Login here
           </Link>

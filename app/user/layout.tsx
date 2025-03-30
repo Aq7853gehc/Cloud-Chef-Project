@@ -9,6 +9,9 @@ import {
   User,
   Utensils,
 } from "lucide-react";
+import { getServerSession } from 'next-auth';
+import { authOption } from '@/auth';
+import { redirect } from 'next/navigation';
 
 const items = [
   {
@@ -56,6 +59,13 @@ const UserLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const session = getServerSession(authOption);
+    if (!session){
+      
+      redirect("/login")
+    }else {
+      console.log("Session info",session)
+    }
   return (
     <SidebarProvider>
     <AppSidebar items={items}/>
