@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChefHat, UtensilsCrossed } from "lucide-react";
+import { ChefHat, LogIn, User } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -10,12 +10,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col items-center">
       {/* Navbar */}
-      <nav className="w-full bg-white shadow-md p-4 fixed top-0 z-50 flex justify-between items-center px-6 md:px-12">
-        <div className="flex items-center gap-3 text-2xl font-bold text-gray-800">
+      <nav className="w-full bg-white shadow-md p-4 fixed top-0 z-50 flex justify-center items-center px-6 md:px-12">
+        <div className="flex items-center gap-3 text-3xl font-bold text-gray-800">
           <ChefHat className="h-8 w-8 text-green-500" /> CloudChef
         </div>
         <div className="flex gap-4">
-          <Button
+          {/* <Button
             variant="outline"
             className="text-gray-700 hover:text-green-500 hover:bg-white  border-green-500"
             asChild
@@ -27,7 +27,7 @@ export default function Home() {
             asChild
           >
             <Link href="/register">Sign Up</Link>
-          </Button>
+          </Button> */}
         </div>
       </nav>
 
@@ -52,8 +52,8 @@ export default function Home() {
               className="bg-green-500 hover:bg-green-400 text-white gap-2"
               asChild
             >
-              <Link href="/user/dashboard">
-                Customer <UtensilsCrossed className="h-5 w-5" />
+              <Link href="/login">
+                Login <LogIn className="w-6 h-6 "/>
               </Link>
             </Button>
             <Button
@@ -62,11 +62,13 @@ export default function Home() {
               className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white gap-2"
               asChild
             >
-              <Link href="/chef/dashboard">
-                Chef? Enroll <ChefHat className="h-5 w-5" />
+              <Link href="/signup">
+                Register <User className="h-5 w-5" />
               </Link>
             </Button>
           </div>
+
+
         </motion.div>
 
         <motion.div
