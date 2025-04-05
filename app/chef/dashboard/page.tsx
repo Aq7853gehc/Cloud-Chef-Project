@@ -25,6 +25,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { signOut } from "next-auth/react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Dashboard() {
   const recipes = [
@@ -79,36 +88,65 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50 w-full">
       {/* Enhanced Header */}
       <header className="bg-gradient-to-r from-primary to-green-600 text-white shadow-lg">
-        <div className="container flex h-20 items-center px-4 justify-between">
+        <div className="flex h-20 items-center px-4 justify-between mx-auto">
           <div className="flex items-center space-x-2">
             <ChefHatIcon className="h-8 w-8" />
             <h1 className="text-2xl font-bold tracking-tight">ChefHub</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/10"
-            >
-              <Bell className="h-6 w-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/10"
-              onClick={()=>signOut()}
-            >
-              <LogOut className="h-6 w-6" />
-            </Button>
-            <Avatar>
-              <AvatarImage src="/chef-avatar.jpg" />
-              <AvatarFallback>CH</AvatarFallback>
-            </Avatar>
+            <SidebarTrigger />
+            <DropdownMenu>
+              <DropdownMenuTrigger className="focus:outline-none">
+                <Avatar className="cursor-pointer hover:ring-2 hover:ring-white/20 transition-all">
+                  <AvatarImage src="/chef-avatar.jpg" />
+                  <AvatarFallback>CH</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-64 mt-2" align="end">
+                <DropdownMenuLabel className="flex items-center">
+                  <Avatar className="h-8 w-8 mr-2">
+                    <AvatarImage src="/chef-avatar.jpg" />
+                    <AvatarFallback>CH</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p>Chef Antoine</p>
+                    <p className="text-xs text-muted-foreground">
+                      antonie@chefhub.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
+                {/* Notifications Section */}
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <Bell className="h-4 w-4" />
+                  Notifications
+                  <Badge variant="destructive" className="ml-auto">
+                    3
+                  </Badge>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                {/* Settings and Logout */}
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <Settings className="h-4 w-4" />
+                  Account Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex items-center gap-2 text-red-500 focus:bg-red-50"
+                  onClick={() => signOut()}
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
 
-      <div className="container px-4 py-8 mx-auto">
+      <div className=" px-4 py-8 mx-auto">
         {/* Welcome Section */}
         <div className="flex items-center justify-between mb-8">
           <div>

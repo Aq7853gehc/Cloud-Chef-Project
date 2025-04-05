@@ -16,8 +16,8 @@ export const POST = async (req: NextRequest) => {
       name,
       address,
       bio,
-      speciality,
-      experience,
+      specialty,
+      exp,
       phone,
     } = data;
     const existingUser = await User.findOne({ email });
@@ -35,8 +35,8 @@ export const POST = async (req: NextRequest) => {
       password: hasPassword,
       address,
       bio,
-      speciality,
-      experience,
+      specialty,
+      exp,
       phone,
       name,
     });

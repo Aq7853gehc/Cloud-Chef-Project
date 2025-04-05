@@ -1,5 +1,5 @@
 import React from 'react'
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   ChefHat,
@@ -68,7 +68,6 @@ const UserLayout = ({
     <SidebarProvider>
     <AppSidebar items={items}/>
     <main className='flex w-full gap-2'>
-      <SidebarTrigger />
       {children}
     </main>
   </SidebarProvider>

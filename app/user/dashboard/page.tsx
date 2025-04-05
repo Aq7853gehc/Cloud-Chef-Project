@@ -19,9 +19,19 @@ import {
   Smile,
   Repeat,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { signOut } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function CustomerDashboard() {
   const pastOrders = [
@@ -81,36 +91,67 @@ export default function CustomerDashboard() {
     <div className="min-h-screen bg-gray-50 w-full">
       {/* Enhanced Header */}
       <header className="bg-gradient-to-r from-primary to-green-600 text-white shadow-lg">
-        <div className="container flex h-20 items-center px-4 justify-between">
+        <div className=" flex h-20 items-center px-4 justify-between">
           <div className="flex items-center space-x-2">
             <Utensils className="h-8 w-8" />
             <h1 className="text-2xl font-bold tracking-tight">Cloud Chef</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/10"
-            >
-              <Bell className="h-6 w-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/10"
-              onClick={() => signOut()}
-            >
-              <LogOut className="h-6 w-6" />
-            </Button>
-            <Avatar>
-              <AvatarImage src="/customer-avatar.jpg" />
-              <AvatarFallback>CU</AvatarFallback>
-            </Avatar>
+            <SidebarTrigger />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="focus:outline-none">
+                <Avatar className="cursor-pointer hover:ring-2 hover:ring-white/20 transition-all">
+                  <AvatarImage src="/customer-avatar.jpg" />
+                  <AvatarFallback>CU</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-64 mt-2" align="end">
+                {/* User Profile Section */}
+                <DropdownMenuLabel className="flex items-center">
+                  <Avatar className="h-8 w-8 mr-2">
+                    <AvatarImage src="/customer-avatar.jpg" />
+                    <AvatarFallback>CU</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p>Customer Name</p>
+                    <p className="text-xs text-muted-foreground">
+                      user@example.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
+                {/* Notifications Section */}
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <Bell className="h-4 w-4" />
+                  Notifications
+                  <Badge variant="destructive" className="ml-auto">
+                    2
+                  </Badge>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                {/* Account Actions */}
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <Settings className="h-4 w-4" />
+                  Account Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex items-center gap-2 text-red-500 focus:bg-red-50"
+                  onClick={() => signOut()}
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
 
-      <div className="container px-4 py-8">
+      <div className=" px-4 py-8">
         {/* Welcome Section with Stats */}
         <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 bg-white shadow-sm">
