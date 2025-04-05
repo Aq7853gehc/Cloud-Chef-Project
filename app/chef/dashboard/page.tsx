@@ -17,12 +17,14 @@ import {
   ChefHatIcon,
   Bell,
   Settings,
+  LogOut,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { signOut } from "next-auth/react";
 
 export default function Dashboard() {
   const recipes = [
@@ -89,6 +91,14 @@ export default function Dashboard() {
               className="text-white hover:bg-white/10"
             >
               <Bell className="h-6 w-6" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/10"
+              onClick={()=>signOut()}
+            >
+              <LogOut className="h-6 w-6" />
             </Button>
             <Avatar>
               <AvatarImage src="/chef-avatar.jpg" />

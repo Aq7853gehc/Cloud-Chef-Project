@@ -10,6 +10,7 @@ export const POST = async (req: NextRequest) => {
     await dbConnect();
     const data = await req.json();
     const {
+      role,
       email,
       password,
       name,
@@ -29,6 +30,7 @@ export const POST = async (req: NextRequest) => {
 
     const hasPassword = await bcrypt.hash(password, 10);
     await User.create({
+      role,
       email,
       password: hasPassword,
       address,

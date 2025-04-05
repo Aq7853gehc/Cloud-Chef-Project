@@ -5,26 +5,76 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingBag, Star, Heart, Truck, User, Bell, Clock, Utensils, ChevronRight, MapPin, Smile, Repeat } from "lucide-react";
+import {
+  ShoppingBag,
+  Star,
+  Heart,
+  Truck,
+  User,
+  Bell,
+  Clock,
+  Utensils,
+  ChevronRight,
+  MapPin,
+  Smile,
+  Repeat,
+  LogOut,
+} from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { signOut } from "next-auth/react";
 
 export default function CustomerDashboard() {
   const pastOrders = [
-    { name: "Spaghetti Carbonara", chef: "Chef Mario", date: "Feb 15", status: "Delivered", rating: 5 },
-    { name: "Chicken Biryani", chef: "Chef Ayesha", date: "Feb 10", status: "Delivered", rating: 4 },
+    {
+      name: "Spaghetti Carbonara",
+      chef: "Chef Mario",
+      date: "Feb 15",
+      status: "Delivered",
+      rating: 5,
+    },
+    {
+      name: "Chicken Biryani",
+      chef: "Chef Ayesha",
+      date: "Feb 10",
+      status: "Delivered",
+      rating: 4,
+    },
   ];
 
   const activeOrders = [
-    { name: "Sushi Platter", chef: "Chef Kenji", date: "Feb 22", status: "On the Way", progress: 75 },
+    {
+      name: "Sushi Platter",
+      chef: "Chef Kenji",
+      date: "Feb 22",
+      status: "On the Way",
+      progress: 75,
+    },
   ];
 
   const favoriteChefs = [
-    { name: "Chef Mario", rating: 4.9, reviews: 320, specialty: "Italian Cuisine", avatar: "/chef-mario.jpg" },
-    { name: "Chef Ayesha", rating: 4.8, reviews: 275, specialty: "Indian Fusion", avatar: "/chef-ayesha.jpg" },
+    {
+      name: "Chef Mario",
+      rating: 4.9,
+      reviews: 320,
+      specialty: "Italian Cuisine",
+      avatar: "/chef-mario.jpg",
+    },
+    {
+      name: "Chef Ayesha",
+      rating: 4.8,
+      reviews: 275,
+      specialty: "Indian Fusion",
+      avatar: "/chef-ayesha.jpg",
+    },
   ];
 
   const reviews = [
-    { chef: "Chef Mario", rating: 5, comment: "Absolutely fantastic carbonara! Best I've ever had.", date: "Feb 16" },
+    {
+      chef: "Chef Mario",
+      rating: 5,
+      comment: "Absolutely fantastic carbonara! Best I've ever had.",
+      date: "Feb 16",
+    },
   ];
 
   return (
@@ -37,8 +87,20 @@ export default function CustomerDashboard() {
             <h1 className="text-2xl font-bold tracking-tight">Cloud Chef</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/10"
+            >
               <Bell className="h-6 w-6" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/10"
+              onClick={() => signOut()}
+            >
+              <LogOut className="h-6 w-6" />
             </Button>
             <Avatar>
               <AvatarImage src="/customer-avatar.jpg" />
@@ -83,13 +145,22 @@ export default function CustomerDashboard() {
         {/* Enhanced Tabs */}
         <Tabs defaultValue="orders" className="space-y-6">
           <TabsList className="bg-transparent gap-4">
-            <TabsTrigger value="orders" className="data-[state=active]:shadow-lg px-6 py-3">
+            <TabsTrigger
+              value="orders"
+              className="data-[state=active]:shadow-lg px-6 py-3"
+            >
               <ShoppingBag className="h-4 w-4 mr-2" /> Orders
             </TabsTrigger>
-            <TabsTrigger value="favorites" className="data-[state=active]:shadow-lg px-6 py-3">
+            <TabsTrigger
+              value="favorites"
+              className="data-[state=active]:shadow-lg px-6 py-3"
+            >
               <Heart className="h-4 w-4 mr-2" /> Favorites
             </TabsTrigger>
-            <TabsTrigger value="reviews" className="data-[state=active]:shadow-lg px-6 py-3">
+            <TabsTrigger
+              value="reviews"
+              className="data-[state=active]:shadow-lg px-6 py-3"
+            >
               <Star className="h-4 w-4 mr-2" /> Reviews
             </TabsTrigger>
           </TabsList>
@@ -102,7 +173,10 @@ export default function CustomerDashboard() {
               </h3>
               <div className="grid gap-4">
                 {activeOrders.map((order, i) => (
-                  <Card key={i} className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <Card
+                    key={i}
+                    className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow"
+                  >
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="text-lg font-semibold">{order.name}</h4>
@@ -110,13 +184,18 @@ export default function CustomerDashboard() {
                           <User className="h-4 w-4 mr-1" /> {order.chef}
                           <Clock className="h-4 w-4 ml-4 mr-1" /> {order.date}
                         </div>
-                        <Progress value={order.progress} className="mt-4 h-2 w-[300px]" />
+                        <Progress
+                          value={order.progress}
+                          className="mt-4 h-2 w-[300px]"
+                        />
                       </div>
                       <div className="text-right">
                         <Badge variant="destructive" className="px-3 py-1">
                           <Truck className="h-4 w-4 mr-2" /> {order.status}
                         </Badge>
-                        <p className="mt-2 text-sm text-muted-foreground">Estimated arrival: 7:30 PM</p>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          Estimated arrival: 7:30 PM
+                        </p>
                       </div>
                     </div>
                   </Card>
@@ -126,11 +205,15 @@ export default function CustomerDashboard() {
 
             <div>
               <h3 className="text-xl font-bold mb-4 flex items-center">
-                <ShoppingBag className="h-6 w-6 mr-2 text-blue-600" /> Past Orders
+                <ShoppingBag className="h-6 w-6 mr-2 text-blue-600" /> Past
+                Orders
               </h3>
               <div className="grid gap-4">
                 {pastOrders.map((order, i) => (
-                  <Card key={i} className="p-6 border-0 shadow-sm hover:shadow-md transition-shadow group">
+                  <Card
+                    key={i}
+                    className="p-6 border-0 shadow-sm hover:shadow-md transition-shadow group"
+                  >
                     <div className="flex justify-between items-center">
                       <div>
                         <h4 className="text-lg font-semibold">{order.name}</h4>
@@ -139,12 +222,22 @@ export default function CustomerDashboard() {
                           <Clock className="h-4 w-4 ml-4 mr-1" /> {order.date}
                           <div className="ml-4 flex items-center">
                             {[...Array(5)].map((_, i) => (
-                              <Star key={i} className={`h-4 w-4 ${i < order.rating ? 'text-yellow-400' : 'text-gray-300'}`} />
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < order.rating
+                                    ? "text-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              />
                             ))}
                           </div>
                         </div>
                       </div>
-                      <Button variant="outline" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button
+                        variant="outline"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
                         <Repeat className="h-4 w-4 mr-2" /> Reorder
                       </Button>
                     </div>
@@ -161,7 +254,10 @@ export default function CustomerDashboard() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {favoriteChefs.map((chef, i) => (
-                <Card key={i} className="p-6 border-0 shadow-sm hover:shadow-md transition-shadow">
+                <Card
+                  key={i}
+                  className="p-6 border-0 shadow-sm hover:shadow-md transition-shadow"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <Avatar className="h-14 w-14">
@@ -170,7 +266,9 @@ export default function CustomerDashboard() {
                       </Avatar>
                       <div>
                         <h4 className="text-lg font-semibold">{chef.name}</h4>
-                        <p className="text-sm text-muted-foreground">{chef.specialty}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {chef.specialty}
+                        </p>
                         <div className="flex items-center mt-1">
                           <Star className="h-4 w-4 text-yellow-400 mr-1" />
                           <span className="text-sm">
@@ -201,10 +299,19 @@ export default function CustomerDashboard() {
                       <div>
                         <div className="flex items-center mb-2">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={`h-5 w-5 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`} />
+                            <Star
+                              key={i}
+                              className={`h-5 w-5 ${
+                                i < review.rating
+                                  ? "text-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
                           ))}
                         </div>
-                        <p className="text-muted-foreground">{review.comment}</p>
+                        <p className="text-muted-foreground">
+                          {review.comment}
+                        </p>
                         <div className="mt-4 flex items-center text-sm text-muted-foreground">
                           <User className="h-4 w-4 mr-2" /> {review.chef}
                           <span className="mx-2">•</span>
@@ -222,7 +329,9 @@ export default function CustomerDashboard() {
               <Card className="p-12 text-center border-0 shadow-sm">
                 <Smile className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                 <h4 className="text-lg font-medium">No Reviews Yet</h4>
-                <p className="text-muted-foreground mt-2">Your reviews will appear here once you submit them</p>
+                <p className="text-muted-foreground mt-2">
+                  Your reviews will appear here once you submit them
+                </p>
               </Card>
             )}
           </TabsContent>

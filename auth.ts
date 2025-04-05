@@ -3,10 +3,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "./lib/dbConnect";
 import bcrypt from "bcryptjs";
 import { User } from "./models/user.models";
-import { AnyARecord } from "dns";
 export const authOption: AuthOptions = {
   pages: {
     signIn: "/login",
+    signOut:"/"
   },
   session: {
     strategy: "jwt",
@@ -23,7 +23,7 @@ export const authOption: AuthOptions = {
           placeholder: "Password",
         },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!credentials?.email && !credentials?.password) {
           throw new Error("Credential Missing");
         }
@@ -37,12 +37,12 @@ export const authOption: AuthOptions = {
           if (!user) {
             throw new Error("NO User Found");
           }
-
+         console.log(credentials.password)
           const match = await bcrypt.compare(
-            user.password,
-            credentials.password
+            credentials.password,
+            user.password
           );
-
+          console.log("check ",match);
           if (match) {
             return user;
           } else {

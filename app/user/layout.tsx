@@ -63,8 +63,6 @@ const UserLayout = ({
     if (!session){
       
       redirect("/login")
-    }else {
-      console.log("Session info",session)
     }
   return (
     <SidebarProvider>

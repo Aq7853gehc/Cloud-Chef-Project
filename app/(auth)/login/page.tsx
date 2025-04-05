@@ -18,7 +18,7 @@ import { Mail, Lock, ChefHat, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
-  const [role, setRole] = useState<"chef" | "customer">("chef"); // Default role is 'chef'
+  const [role, setRole] = useState<"chef" | "customer">(); // Default role is 'chef'
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();

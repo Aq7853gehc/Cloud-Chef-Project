@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 const RegisterPage: React.FC = () => {
-  const [role, setRole] = useState<"chef" | "customer">("customer");
+  const [role, setRole] = useState<"chef" | "customer">();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     role: role,

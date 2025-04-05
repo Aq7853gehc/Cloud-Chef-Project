@@ -29,11 +29,11 @@ export async function middleware(request: NextRequest) {
 
   // Check role-based access
   if (url.pathname.startsWith('/chef') && token.role !== 'chef') {
-    return NextResponse.redirect(new URL('/auth/unauthorized', request.url));
+    return NextResponse.redirect(new URL('/user/dashboard', request.url));
   }
 
   if ((url.pathname.startsWith('/user') || url.pathname.startsWith('/customer')) && token.role !== 'customer') {
-    return NextResponse.redirect(new URL('/auth/unauthorized', request.url));
+    return NextResponse.redirect(new URL('/chef/dashboard', request.url));
   }
 
   return NextResponse.next();
