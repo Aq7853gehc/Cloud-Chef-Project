@@ -21,7 +21,7 @@ const CartSchema: Schema = new Schema(
       {
         recipe: {
           type: Schema.Types.ObjectId,
-          ref: 'Recipe'
+          ref: 'Menu'
         },
         quantity: {
           type: Number,

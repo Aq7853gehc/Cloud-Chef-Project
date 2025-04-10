@@ -17,7 +17,7 @@ const OrderSchema: Schema = new Schema(
     recipe: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Recipe',
+        ref: 'Menu',
         required: true
       }
     ],

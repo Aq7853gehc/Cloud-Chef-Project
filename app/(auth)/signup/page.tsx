@@ -103,11 +103,7 @@ const RegisterPage: React.FC = () => {
                 Share your culinary skills and connect with food lovers
               </CardDescription>
             </CardHeader>
-            <CardFooter className="flex justify-center p-6">
-              <Button className="bg-green-600 hover:bg-green-700">
-                Select Chef
-              </Button>
-            </CardFooter>
+           
           </Card>
 
           {/* Customer Card */}
@@ -124,11 +120,7 @@ const RegisterPage: React.FC = () => {
                 Discover amazing chefs and enjoy delicious meals
               </CardDescription>
             </CardHeader>
-            <CardFooter className="flex justify-center p-6">
-              <Button className="bg-green-600 hover:bg-green-700">
-                Select Customer
-              </Button>
-            </CardFooter>
+            
           </Card>
         </div>
       ) : (

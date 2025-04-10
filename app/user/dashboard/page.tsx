@@ -22,7 +22,7 @@ import {
   Settings,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,60 +32,96 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useEffect, useState } from "react";
+import { getuser } from "@/app/actions/user.action";
+import { redirect, useRouter } from "next/navigation";
+import { IUser } from "@/models/user.models";
+const pastOrders = [
+  {
+    name: "Spaghetti Carbonara",
+    chef: "Chef Mario",
+    date: "Feb 15",
+    status: "Delivered",
+    rating: 5,
+  },
+  {
+    name: "Chicken Biryani",
+    chef: "Chef Ayesha",
+    date: "Feb 10",
+    status: "Delivered",
+    rating: 4,
+  },
+];
 
+const activeOrders = [
+  {
+    name: "Sushi Platter",
+    chef: "Chef Kenji",
+    date: "Feb 22",
+    status: "On the Way",
+    progress: 75,
+  },
+];
+
+const favoriteChefs = [
+  {
+    name: "Chef Mario",
+    rating: 4.9,
+    reviews: 320,
+    specialty: "Italian Cuisine",
+    avatar: "/chef-mario.jpg",
+  },
+  {
+    name: "Chef Ayesha",
+    rating: 4.8,
+    reviews: 275,
+    specialty: "Indian Fusion",
+    avatar: "/chef-ayesha.jpg",
+  },
+];
+
+const reviews = [
+  {
+    chef: "Chef Mario",
+    rating: 5,
+    comment: "Absolutely fantastic carbonara! Best I've ever had.",
+    date: "Feb 16",
+  },
+];
 export default function CustomerDashboard() {
-  const pastOrders = [
-    {
-      name: "Spaghetti Carbonara",
-      chef: "Chef Mario",
-      date: "Feb 15",
-      status: "Delivered",
-      rating: 5,
-    },
-    {
-      name: "Chicken Biryani",
-      chef: "Chef Ayesha",
-      date: "Feb 10",
-      status: "Delivered",
-      rating: 4,
-    },
-  ];
+  const [userData, setUserData] = useState<IUser>();
+  const { data: session } = useSession();
+  const router = useRouter();
+  if (!session) {
+    redirect("/login");
+  }
 
-  const activeOrders = [
-    {
-      name: "Sushi Platter",
-      chef: "Chef Kenji",
-      date: "Feb 22",
-      status: "On the Way",
-      progress: 75,
-    },
-  ];
-
-  const favoriteChefs = [
-    {
-      name: "Chef Mario",
-      rating: 4.9,
-      reviews: 320,
-      specialty: "Italian Cuisine",
-      avatar: "/chef-mario.jpg",
-    },
-    {
-      name: "Chef Ayesha",
-      rating: 4.8,
-      reviews: 275,
-      specialty: "Indian Fusion",
-      avatar: "/chef-ayesha.jpg",
-    },
-  ];
-
-  const reviews = [
-    {
-      chef: "Chef Mario",
-      rating: 5,
-      comment: "Absolutely fantastic carbonara! Best I've ever had.",
-      date: "Feb 16",
-    },
-  ];
+  useEffect(() => {
+    const fun = async () => {
+      try {
+        if (session.user.role !== "customer") {
+          router.replace("/chef/dashboard");
+          return;
+        }
+        if (!session?.user?.email) {
+          throw new Error("No email found in session");
+        }
+        const result = await getuser(session.user.email);
+        if (!result.success) {
+          throw new Error("Result not get");
+        }
+        const user = result.data;
+        if (!user) {
+          throw new Error("Nothing found");
+        }
+        console.log(user[0]);
+        setUserData(user[0]);
+      } catch (error) {
+        console.error("No result", error);
+      }
+    };
+    fun();
+  }, [userData]);
 
   return (
     <div className="min-h-screen bg-gray-50 w-full">
@@ -101,22 +137,21 @@ export default function CustomerDashboard() {
 
             <DropdownMenu>
               <DropdownMenuTrigger className="focus:outline-none">
-                <Avatar className="cursor-pointer hover:ring-2 hover:ring-white/20 transition-all">
-                  <AvatarImage src="/customer-avatar.jpg" />
-                  <AvatarFallback>CU</AvatarFallback>
+                <Avatar className="cursor-pointer  transition-all bg-green-900">
+                  <AvatarFallback>{userData?.name[0]}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-64 mt-2" align="end">
                 {/* User Profile Section */}
                 <DropdownMenuLabel className="flex items-center">
-                  <Avatar className="h-8 w-8 mr-2">
+                  <Avatar className="h-8 w-8 mr-2 ">
                     <AvatarImage src="/customer-avatar.jpg" />
-                    <AvatarFallback>CU</AvatarFallback>
+                    <AvatarFallback>{userData?.name[0]}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p>Customer Name</p>
+                    <p>{userData?.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      user@example.com
+                      {userData?.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>

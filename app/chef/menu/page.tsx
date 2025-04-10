@@ -19,7 +19,7 @@ interface MenuItem {
 
 const initialMenu: MenuItem[] = [
   { id: "1", name: "Grilled Chicken", description: "Served with vegetables", price: 12.99, category: "Main Course" },
-  { id: "2", name: "Pasta Primavera", description: "Fresh vegetables and pasta", price: 10.99, category: "Main Course" },
+  { id: "2", name: "Pasta", description: "Fresh vegetables and pasta", price: 10.99, category: "Main Course" },
 ];
 
 const ChefMenuManagement: React.FC = () => {
@@ -113,12 +113,12 @@ const ChefMenuManagement: React.FC = () => {
                 exit={{ opacity: 0, y: -10 }}
                 className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
               >
-                <Card>
+                <Card className="">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg font-semibold">{item.name}</CardTitle>
                       {item.category && (
-                        <Badge variant="outline" className="text-sm text-primary border-primary">
+                        <Badge variant="outline" className="text-xs text-primary border-primary">
                           {item.category}
                         </Badge>
                       )}

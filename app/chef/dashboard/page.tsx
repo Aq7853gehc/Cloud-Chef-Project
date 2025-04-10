@@ -1,5 +1,4 @@
 "use client";
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +23,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
@@ -34,55 +33,92 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
+import { redirect, useRouter } from "next/navigation";
+import { getuser } from "@/app/actions/user.action";
+import { IUser } from "@/models/user.models";
+const recipes = [
+  {
+    name: "Razma Chaval",
+    rating: 4.8,
+    reviews: 156,
+    status: "Published",
+    cookTime: "45 min",
+  },
+  {
+    name: "Coq au Vin",
+    rating: 4.7,
+    reviews: 98,
+    status: "Draft",
+    cookTime: "2.5 hrs",
+  },
+  {
+    name: "Risotto al Funghi",
+    rating: 4.9,
+    reviews: 203,
+    status: "Published",
+    cookTime: "35 min",
+  },
+];
+
+const upcomingEvents = [
+  {
+    name: "Private Dining Event",
+    date: "Apr 15",
+    guests: 12,
+    progress: 75,
+    type: "Dinner",
+  },
+  {
+    name: "Cooking Workshop",
+    date: "Apr 18",
+    guests: 8,
+    progress: 30,
+    type: "Workshop",
+  },
+  {
+    name: "Wine Pairing Dinner",
+    date: "Apr 20",
+    guests: 20,
+    progress: 45,
+    type: "Event",
+  },
+];
 
 export default function Dashboard() {
-  const recipes = [
-    {
-      name: "Razma Chaval",
-      rating: 4.8,
-      reviews: 156,
-      status: "Published",
-      cookTime: "45 min",
-    },
-    {
-      name: "Coq au Vin",
-      rating: 4.7,
-      reviews: 98,
-      status: "Draft",
-      cookTime: "2.5 hrs",
-    },
-    {
-      name: "Risotto al Funghi",
-      rating: 4.9,
-      reviews: 203,
-      status: "Published",
-      cookTime: "35 min",
-    },
-  ];
+  const [userData, setUserData] = useState<IUser>();
+  const { data: session } = useSession();
+  const router = useRouter();
+  if (!session) {
+    redirect("/login");
+  }
 
-  const upcomingEvents = [
-    {
-      name: "Private Dining Event",
-      date: "Apr 15",
-      guests: 12,
-      progress: 75,
-      type: "Dinner",
-    },
-    {
-      name: "Cooking Workshop",
-      date: "Apr 18",
-      guests: 8,
-      progress: 30,
-      type: "Workshop",
-    },
-    {
-      name: "Wine Pairing Dinner",
-      date: "Apr 20",
-      guests: 20,
-      progress: 45,
-      type: "Event",
-    },
-  ];
+  useEffect(() => {
+    const fun = async () => {
+      try {
+        if (session.user.role !== "chef") {
+          router.replace("/user/dashboard");
+          return;
+        }
+        if (!session?.user?.email) {
+          throw new Error("No email found in session");
+        }
+        const result = await getuser(session.user.email);
+        if (!result.success) {
+          throw new Error("Result not get");
+        }
+        const user = result.data;
+        if(!user) {
+          throw new Error("Nothing found")
+        }
+        console.log(user[0]);
+        setUserData(user[0]);
+      } catch (error) {
+        console.error("No result",error);
+      }
+    };
+    fun();
+  }, [userData]);
 
   return (
     <div className="min-h-screen bg-gray-50 w-full">
@@ -97,21 +133,20 @@ export default function Dashboard() {
             <SidebarTrigger />
             <DropdownMenu>
               <DropdownMenuTrigger className="focus:outline-none">
-                <Avatar className="cursor-pointer hover:ring-2 hover:ring-white/20 transition-all">
-                  <AvatarImage src="/chef-avatar.jpg" />
-                  <AvatarFallback>CH</AvatarFallback>
+                <Avatar className="cursor-pointer  transition-all bg-green-900">
+                  <AvatarFallback>{userData?.name[0]}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-64 mt-2" align="end">
                 <DropdownMenuLabel className="flex items-center">
                   <Avatar className="h-8 w-8 mr-2">
                     <AvatarImage src="/chef-avatar.jpg" />
-                    <AvatarFallback>CH</AvatarFallback>
+                    <AvatarFallback>{userData?.name[0]}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p>Chef Antoine</p>
+                    <p>{userData?.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      antonie@chefhub.com
+                      {userData?.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
@@ -152,7 +187,7 @@ export default function Dashboard() {
           <div>
             <h2 className="text-3xl font-bold tracking-tight">
               Welcome back,
-              <span className="text-yellow-500"> Chef Antoine!</span>
+              <span className="text-yellow-500"> Chef {userData?.name}!</span>
             </h2>
             <p className="text-muted-foreground mt-2">
               Your kitchen performance at a glance

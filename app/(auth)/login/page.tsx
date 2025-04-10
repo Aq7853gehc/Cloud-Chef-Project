@@ -10,6 +10,7 @@ import { Mail, Lock, ChefHat, User, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
+  
   const [selectedRole, setSelectedRole] = useState<"chef" | "customer">();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,9 +46,7 @@ const LoginPage: React.FC = () => {
                 Access your professional kitchen dashboard
               </CardDescription>
             </CardHeader>
-            <CardFooter className="flex justify-center p-6">
-              <Button className="bg-green-600 hover:bg-green-700">Select Chef</Button>
-            </CardFooter>
+           
           </Card>
 
           {/* Customer Card */}
@@ -61,9 +60,6 @@ const LoginPage: React.FC = () => {
                 Discover and order delicious meals
               </CardDescription>
             </CardHeader>
-            <CardFooter className="flex justify-center p-6">
-              <Button className="bg-green-600 hover:bg-green-700">Select Customer</Button>
-            </CardFooter>
           </Card>
         </div>
       ) : (
