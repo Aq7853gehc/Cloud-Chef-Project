@@ -1,43 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash, Pencil, Utensils } from "lucide-react";
+import { Plus, Trash, Pencil, Utensils, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface MenuItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category?: string;
-}
-
-const initialMenu: MenuItem[] = [
-  { id: "1", name: "Grilled Chicken", description: "Served with vegetables", price: 12.99, category: "Main Course" },
-  { id: "2", name: "Pasta", description: "Fresh vegetables and pasta", price: 10.99, category: "Main Course" },
-];
+import {  MenuItem } from "@/models/menu.modules";
+import { addMenuItem, getAllMenuItem } from "@/app/actions/menu.action";
 
 const ChefMenuManagement: React.FC = () => {
-  const [menu, setMenu] = useState<MenuItem[]>(initialMenu);
-  const [newItem, setNewItem] = useState<MenuItem>({ id: "", name: "", description: "", price: 0, category: "" });
+  const [menu, setMenu] = useState<MenuItem[]>([]);
   const [isAdding, setIsAdding] = useState(false);
+  const [newItem, setNewItem] = useState<MenuItem>({
+    title: "",
+    type: "Veg",
+    price: 0,
+    discription: "",
+    category: "",
+  });
 
-  const addMenuItem = () => {
-    if (newItem.name && newItem.description && newItem.price) {
-      setMenu([...menu, { ...newItem, id: Date.now().toString() }]);
-      setNewItem({ id: "", name: "", description: "", price: 0, category: "" });
-      setIsAdding(false);
+  const fetchMenu = async () => {
+    const result = await getAllMenuItem();
+    if (result.success && result.data) {
+      setMenu(result.data);
     }
   };
 
-  const removeMenuItem = (id: string) => {
-    setMenu(menu.filter((item) => item.id !== id));
+  const handleAddItem = async () => {
+    if (!newItem.title || !newItem.discription || newItem.price === undefined) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    const result = await addMenuItem(newItem);
+    if (result.success) {
+      await fetchMenu();
+      setNewItem({
+        title: "",
+        type: "Veg",
+        price: 0,
+        discription: "",
+        category: "",
+      });
+      setIsAdding(false);
+    } else {
+      alert(result.error || "Failed to add menu item");
+    }
   };
+
+  const removeMenuItem = async (index: number) => {
+    // Implement your delete logic here
+    // You'll need a deleteMenuItem server action
+    console.log("Remove item at index:", index);
+  };
+
+  useEffect(() => {
+    fetchMenu();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -50,9 +72,13 @@ const ChefMenuManagement: React.FC = () => {
           </h1>
           <Button
             onClick={() => setIsAdding(!isAdding)}
-            className="bg-gradient-to-r from-primary to-green-600 hover:from-primary/90 hover:to-green-600/90"
+            className={`bg-gradient-to-r from-primary to-green-600  hover:from-primary/90 hover:to-green-600/90  `}
           >
-            <Plus className="w-5 h-5 mr-2" />
+            {isAdding ? (
+              <X className="w-5 h-5 mr-2" />
+            ) : (
+              <Plus className="w-5 h-5 mr-2" />
+            )}
             {isAdding ? "Cancel" : "Add Item"}
           </Button>
         </div>
@@ -66,34 +92,66 @@ const ChefMenuManagement: React.FC = () => {
               exit={{ opacity: 0, height: 0 }}
               className="bg-white shadow-sm rounded-lg p-6 mb-8 border border-gray-100"
             >
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">New Menu Item</h3>
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                New Menu Item
+              </h3>
               <div className="space-y-4">
                 <Input
-                  placeholder="Item Name"
-                  value={newItem.name}
-                  onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+                  placeholder="Item Name*"
+                  value={newItem.title}
+                  onChange={(e) =>
+                    setNewItem({ ...newItem, title: e.target.value })
+                  }
                   className="bg-gray-50 border-gray-200"
+                  required
                 />
-                <Textarea
-                  placeholder="Description"
-                  value={newItem.description}
-                  onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
-                  className="bg-gray-50 border-gray-200"
-                />
+                <select
+                  value={newItem.type}
+                  onChange={(e) =>
+                    setNewItem({
+                      ...newItem,
+                      type: e.target.value as "Veg" | "Non-Veg",
+                    })
+                  }
+                  className="flex h-10 w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <option value="Veg">Vegetarian</option>
+                  <option value="Non-Veg">Non-Vegetarian</option>
+                </select>
                 <Input
                   type="number"
-                  placeholder="Price"
-                  value={newItem.price}
-                  onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) || 0 })}
+                  placeholder="Price*"
+                  value={newItem.price || ""}
+                  onChange={(e) =>
+                    setNewItem({
+                      ...newItem,
+                      price: parseFloat(e.target.value) || 0,
+                    })
+                  }
                   className="bg-gray-50 border-gray-200"
+                  required
+                />
+                <Textarea
+                  placeholder="Description*"
+                  value={newItem.discription}
+                  onChange={(e) =>
+                    setNewItem({ ...newItem, discription: e.target.value })
+                  }
+                  className="bg-gray-50 border-gray-200"
+                  required
                 />
                 <Input
                   placeholder="Category (Optional)"
                   value={newItem.category || ""}
-                  onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+                  onChange={(e) =>
+                    setNewItem({ ...newItem, category: e.target.value })
+                  }
                   className="bg-gray-50 border-gray-200"
                 />
-                <Button onClick={addMenuItem} className="w-full bg-green-600 hover:bg-green-700">
+                <Button
+                  onClick={handleAddItem}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
                   <Plus className="w-5 h-5 mr-2" />
                   Add to Menu
                 </Button>
@@ -105,9 +163,9 @@ const ChefMenuManagement: React.FC = () => {
         {/* Menu Items Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence>
-            {menu.map((item) => (
+            {menu.map((item, index) => (
               <motion.div
-                key={item.id}
+                key={index}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -116,22 +174,32 @@ const ChefMenuManagement: React.FC = () => {
                 <Card className="">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg font-semibold">{item.name}</CardTitle>
-                      {item.category && (
-                        <Badge variant="outline" className="text-xs text-primary border-primary">
-                          {item.category}
-                        </Badge>
-                      )}
+                      <CardTitle className="text-lg font-semibold">
+                        {item.title}
+                      </CardTitle>
+                      <Badge
+                        variant="outline"
+                        className="text-xs text-primary border-primary"
+                      >
+                        {item.type}
+                      </Badge>
                     </div>
+                    {item.category && (
+                      <Badge variant="secondary" className="text-xs mt-2">
+                        {item.category}
+                      </Badge>
+                    )}
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-700 mb-4">{item.description}</p>
-                    <p className="text-2xl font-bold text-primary mb-4">${item.price.toFixed(2)}</p>
+                    <p className="text-gray-700 mb-4">{item.discription}</p>
+                    <p className="text-2xl font-bold text-primary mb-4">
+                      ${item.price.toFixed(2)}
+                    </p>
                     <div className="flex gap-2">
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => removeMenuItem(item.id)}
+                        onClick={() => removeMenuItem(index)}
                         className="flex-1"
                       >
                         <Trash className="w-4 h-4 mr-2" />

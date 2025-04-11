@@ -6,10 +6,12 @@ import { User } from "./models/user.models";
 export const authOption: AuthOptions = {
   pages: {
     signIn: "/login",
-    signOut:"/"
+    signOut: "/",
   },
   session: {
     strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60,
+    updateAge: 60 * 60,
   },
 
   providers: [
@@ -37,12 +39,12 @@ export const authOption: AuthOptions = {
           if (!user) {
             throw new Error("NO User Found");
           }
-         console.log(credentials.password)
+          console.log(credentials.password);
           const match = await bcrypt.compare(
             credentials.password,
             user.password
           );
-          console.log("check ",match);
+          console.log("check ", match);
           if (match) {
             return user;
           } else {

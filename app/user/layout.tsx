@@ -67,7 +67,7 @@ const UserLayout = ({
   return (
     <SidebarProvider>
     <AppSidebar items={items}/>
-    <main className='flex w-full gap-2'>
+    <main className='flex w-full gap-2 bg-green-50'>
       {children}
     </main>
   </SidebarProvider>

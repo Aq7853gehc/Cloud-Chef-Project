@@ -121,11 +121,10 @@ export default function CustomerDashboard() {
       }
     };
     fun();
-  }, [userData]);
+  }, );
 
   return (
     <div className="min-h-screen bg-gray-50 w-full">
-      {/* Enhanced Header */}
       <header className="bg-gradient-to-r from-primary to-green-600 text-white shadow-lg">
         <div className=" flex h-20 items-center px-4 justify-between">
           <div className="flex items-center space-x-2">

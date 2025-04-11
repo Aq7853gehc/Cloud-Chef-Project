@@ -1,13 +1,14 @@
 import mongoose, { Document } from "mongoose";
 import { model, Schema } from "mongoose";
-
-export interface Imenu extends Document {
-  title: String;
+export interface MenuItem {
+  title: string;
   type: "Veg" | "Non-Veg";
-  price: Number;
-  discription: String;
-  category: String;
+  price: number;
+  discription: string;
+  category: string;
 }
+
+export interface Imenu extends MenuItem,Document {}
 
 const menuSchema = new Schema<Imenu>(
   {
