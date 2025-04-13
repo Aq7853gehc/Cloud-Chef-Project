@@ -10,7 +10,9 @@ export async function middleware(request: NextRequest) {
   const protectedRoutes = [
     '/chef',
     '/user',
-    '/customer'
+    '/customer',
+    '/checkout',
+    'thankyou'
   ];
 
   // Check if the current route is protected

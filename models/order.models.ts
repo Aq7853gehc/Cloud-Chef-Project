@@ -2,19 +2,19 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IOrder extends Document {
   user: mongoose.Types.ObjectId;
-  recipe: mongoose.Types.ObjectId[];
+  items: mongoose.Types.ObjectId[];
   totalAmount: number;
   status: 'pending' | 'completed' | 'canceled';
 }
 
-const OrderSchema: Schema = new Schema(
+const OrderSchema: Schema = new Schema<IOrder>(
   {
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
-    recipe: [
+    items: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Menu',
@@ -34,4 +34,4 @@ const OrderSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export const Order =  mongoose.model<IOrder>('Order', OrderSchema);
+export const Order = mongoose.models.Order|| mongoose.model<IOrder>('Order', OrderSchema);

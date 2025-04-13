@@ -111,7 +111,6 @@ export default function Dashboard() {
         if(!user) {
           throw new Error("Nothing found")
         }
-        console.log(user[0]);
         setUserData(user[0]);
       } catch (error) {
         console.error("No result",error);

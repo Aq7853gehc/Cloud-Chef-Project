@@ -5,12 +5,16 @@ declare module "next-auth" {
     id?: string;
     role?: string;
     email?: string;
+    address?: string;
+    phone?: string;
   }
 
   interface JWT {
     _id?: string;
     role?: string;
     email?: string;
+    address?: string;
+    phone?: string;
   }
 
   interface Session {
@@ -18,6 +22,8 @@ declare module "next-auth" {
       _id?: string;
       role?: string;
       email?: string;
+      address?: string;
+      phone?: string;
     };
   }
 }

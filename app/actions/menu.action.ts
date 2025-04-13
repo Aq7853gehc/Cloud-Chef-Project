@@ -3,7 +3,6 @@
 import dbConnect from "@/lib/dbConnect";
 import { Menu, MenuItem } from "@/models/menu.modules";
 
-
 export const getAllMenuItem = async (): Promise<{
   success: boolean;
   data?: MenuItem[];
@@ -69,3 +68,4 @@ export const addMenuItem = async (
     };
   }
 };
+

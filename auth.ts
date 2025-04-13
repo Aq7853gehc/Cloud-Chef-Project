@@ -64,6 +64,8 @@ export const authOption: AuthOptions = {
         token.email = user.email;
         token.name = user.name;
         token.role = user.role;
+        token.address = user.address;
+        token.phone = user.phone;
       }
       return token;
     },
@@ -72,6 +74,8 @@ export const authOption: AuthOptions = {
         session.user._id = (token as any)._id;
         session.user.role = (token as any).role;
         session.user.email = (token as any).email;
+        session.user.address = (token as any).address;
+        session.user.phone = (token as any).phone;
       }
       return session;
     },
