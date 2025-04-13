@@ -1,5 +1,4 @@
 "use client";
-// @ts-nocheck
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Plus, Minus, Search, Leaf, Sprout,  ChevronDown, X,  } from "lucide-react";
@@ -350,7 +349,7 @@ export default function MenuPage() {
                       <span>Total</span>
                       <span>${(cartTotal + deliveryFee).toFixed(2)}</span>
                     </div>
-                    <Link href="/checkout">
+                    <Link href="/user/menu/checkout">
                       <Button 
                         className="w-full bg-green-600 hover:bg-green-700 shadow-sm"
                         disabled={cartTotal < orderMinimum}
@@ -468,7 +467,7 @@ export default function MenuPage() {
                       <span>Total</span>
                       <span>${(cartTotal + deliveryFee).toFixed(2)}</span>
                     </div>
-                    <Link href="/checkout">
+                    <Link href="/user/menu/checkout">
                       <Button 
                         className="w-full bg-green-600 hover:bg-green-700 shadow-sm"
                         disabled={cartTotal < orderMinimum}

@@ -92,36 +92,48 @@ export default function CustomerDashboard() {
   const [userData, setUserData] = useState<IUser>();
   const { data: session } = useSession();
   const router = useRouter();
-  if (!session) {
-    redirect("/login");
-  }
+  useEffect(() => {
+    if (
+      !session?.user._id ||
+      !session.user.address ||
+      !session.user.phone ||
+      !session.user.email
+    ) {
+      redirect("/login");
+    }
+  }, [session]);
+  const fun = async  () => {
+    try {
+      if (session?.user.role !== "customer") {
+        router.replace("/chef/dashboard");
+        return;
+      }
+      if (!session?.user?.email) {
+        throw new Error("No email found in session");
+      }
+      const result = await getuser(session?.user.email);
+      if (!result.success) {
+        throw new Error("Result not get");
+      }
+      const user = result.data;
+      if (!user) {
+        throw new Error("Nothing found");
+      }
+      console.log(user[0]);
+      setUserData(user[0]);
+    } catch (error) {
+      console.error("No result", error);
+    }
+  };
 
   useEffect(() => {
-    const fun = async () => {
-      try {
-        if (session.user.role !== "customer") {
-          router.replace("/chef/dashboard");
-          return;
-        }
-        if (!session?.user?.email) {
-          throw new Error("No email found in session");
-        }
-        const result = await getuser(session.user.email);
-        if (!result.success) {
-          throw new Error("Result not get");
-        }
-        const user = result.data;
-        if (!user) {
-          throw new Error("Nothing found");
-        }
-        console.log(user[0]);
-        setUserData(user[0]);
-      } catch (error) {
-        console.error("No result", error);
-      }
-    };
+    
+    if (!session?.user?.email) { 
+      redirect("/login")
+      return;
+    }
     fun();
-  }, );
+  }, [session?.user.email]);
 
   return (
     <div className="min-h-screen bg-gray-50 w-full">

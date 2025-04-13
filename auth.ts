@@ -10,8 +10,6 @@ export const authOption: AuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60,
-    updateAge: 60 * 60,
   },
 
   providers: [
@@ -42,7 +40,7 @@ export const authOption: AuthOptions = {
           console.log(credentials.password);
           const match = await bcrypt.compare(
             credentials.password,
-            user.password
+            user.password,
           );
           console.log("check ", match);
           if (match) {

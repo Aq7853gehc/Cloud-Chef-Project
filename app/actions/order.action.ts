@@ -56,10 +56,10 @@ export const getLatestOrders = async (userId:string) => {
 
   try {
     const order = await Order.find({user: userId})
-      .sort({ createdAt: -1 }).populate("items user") 
+      .sort({ createdAt: -1 }).populate("items") 
       .limit(1) 
       .exec();
-
+    console.log(order[0].items)
     return {
       success: true,
       data: JSON.parse(JSON.stringify(order)),

@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
     '/chef',
     '/user',
     '/customer',
-    '/checkout',
+  
     'thankyou'
   ];
 

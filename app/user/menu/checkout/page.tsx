@@ -1,65 +1,64 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { getLatestOrders } from "@/app/actions/order.action";
 import { useSession } from "next-auth/react";
-import { CartItem } from "@/app/user/menu/page";
 import { IOrder } from "@/models/order.models";
 
 export default function PlaceOrder() {
-  const router = useRouter();
-  const [cart] = useState<CartItem[]>();
-  const [data,setData] = useState<IOrder>()
-  const [userDetails, setUserDetails] = useState({
-    email: "",
-    address: "",
-    phone: "",
-  });
   const { data: session } = useSession();
-  const fetch = async () => {
-    if(!session?.user._id)throw new Error("User id not found")
-    const result = await getLatestOrders(session.user._id);
-    if (!result) throw new Error("Result not found");
-    setData(result.data)
-    console.log(result.data)
-  };
-
+  // const router = useRouter();
+  
+  const [data, setData] = useState<IOrder>();
   useEffect(() => {
-    fetch();
-  });
-
-  const cartTotal = cart?.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
-  };
-
-  const placeOrder = () => {
     if (
       !session?.user._id ||
       !session.user.address ||
       !session.user.phone ||
       !session.user.email
-    )
-      throw new Error("Session not found");
-    setUserDetails({
-      email: session.user.email,
-      address: session.user.address,
-      phone: session.user.phone,
-    });
+    ) {
+      redirect("/login");
+    }
+  }, [session]);
 
+  const [userDetails] = useState({
+    email: session?.user.email || "",
+    address: session?.user.address || "",
+    phone: session?.user.phone || "",
+  });
+
+  const fetchData = async () => {
+    if (!session?.user._id) return;
+
+    try {
+      const result = await getLatestOrders(session.user._id);
+      if (!result) throw new Error("Result not found");
+      setData(result.data[0]);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [session?.user._id]);
+
+  
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
+  // };
+
+  const placeOrder = () => {
     alert("Order placed successfully!");
-    router.push("/thank-you");
+    redirect("/thank-you");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col items-center px-6 py-12">
+    <div className="container text-gray-900 flex flex-col items-center px-6 py-12">
       <motion.h2
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -80,13 +79,24 @@ export default function PlaceOrder() {
           Order Summary
         </h3>
         <div className="space-y-4">
-           {`${data}`}
+          {/* {data?.items.map((item) => (
+            <div
+              key={item?.id}
+              className="flex items-center justify-between border-b pb-3"
+            >
+              <div className="flex-1 pl-3">
+                <h4 className="text-gray-900 font-medium">{item?.title}</h4>
+                <p className="text-gray-500 text-sm">
+                  ${item?.price.toFixed(2)}
+                </p>
+              </div>
+             
+            </div>
+          ))} */}
         </div>
         <div className="flex items-center justify-between mt-4">
           <span className="text-lg font-medium text-gray-900">Total:</span>
-          <span className="text-xl font-bold text-gray-900">
-            ${cartTotal}
-          </span>
+          <span className="text-xl font-bold text-gray-900">${data?.totalAmount}</span>
         </div>
       </motion.div>
 
@@ -104,24 +114,24 @@ export default function PlaceOrder() {
           <input
             type="text"
             name="name"
+            readOnly
             value={userDetails.email}
-            onChange={handleInputChange}
             placeholder="Full Name"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
           />
           <input
             type="text"
             name="address"
+            readOnly
             value={userDetails.address}
-            onChange={handleInputChange}
             placeholder="Delivery Address"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
           />
           <input
             type="text"
             name="phone"
+            readOnly
             value={userDetails.phone}
-            onChange={handleInputChange}
             placeholder="Phone Number"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
           />
