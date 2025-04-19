@@ -6,9 +6,11 @@ export interface MenuItem {
   price: number;
   discription: string;
   category: string;
+  createdBy: mongoose.Types.ObjectId;
 }
 
-export interface Imenu extends MenuItem,Document {}
+export interface Imenu extends MenuItem,Document {
+}
 
 const menuSchema = new Schema<Imenu>(
   {
@@ -32,6 +34,11 @@ const menuSchema = new Schema<Imenu>(
     },
     discription: {
       type: String,
+      required: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
   },

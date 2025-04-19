@@ -10,7 +10,7 @@ export const getAllMenuItem = async (): Promise<{
 }> => {
   await dbConnect();
   try {
-    const result = await Menu.find().lean().exec();
+    const result = await Menu.find().populate("createdBy").lean().exec();
     if (!result || result.length === 0) {
       return { success: false, error: "No menu items found" };
     }
@@ -69,3 +69,25 @@ export const addMenuItem = async (
   }
 };
 
+
+export const getMenuByUser = async (userId: string): Promise<{
+  success: boolean;
+  data?: MenuItem[];
+  error?: string;
+}> => {
+  await dbConnect();  
+  try {
+    const result = await Menu.find({ createdBy: userId }).lean().exec();
+    if (!result || result.length === 0) {
+      return { success: false, error: "No menu items found" };
+    }
+    const menuResult = JSON.parse(JSON.stringify(result));
+    return { success: true, data: menuResult }; 
+  } catch (error) {
+    console.error("Error fetching menu items:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to fetch menu items",
+    };
+  }
+};

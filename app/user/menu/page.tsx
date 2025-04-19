@@ -30,6 +30,7 @@ export default function MenuPage() {
       const result = await getAllMenuItem();
       if (result.success && result.data) {
         setMenu(result.data);
+        console.log(result.data);
       }
     } catch (error) {
       console.error("Failed to fetch menu:", error);
@@ -244,6 +245,8 @@ export default function MenuPage() {
                         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                           {item.discription}
                         </p>
+                        {/* @ts-expect-error this is not the problem */}
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{`Made By:- Chef ${item.createdBy.name}`}</p>
                         <div className="flex items-center justify-between">
                           <span className="text-lg font-bold text-green-700">
                             ${item.price.toFixed(2)}

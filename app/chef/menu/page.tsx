@@ -9,10 +9,20 @@ import { Plus, Trash, Pencil, Utensils, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { MenuItem } from "@/models/menu.modules";
-import { addMenuItem, getAllMenuItem } from "@/app/actions/menu.action";
+import { addMenuItem, getMenuByUser } from "@/app/actions/menu.action";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import mongoose from "mongoose";
 
 const ChefMenuManagement: React.FC = () => {
+  const {data:session} = useSession();
+  if(!session){
+    redirect("/login");
+  }
+  if (session.user.role !== "chef") {
+    redirect("/");
+  }
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,12 +33,13 @@ const ChefMenuManagement: React.FC = () => {
     price: 0,
     discription: "",
     category: "",
+    createdBy: session?.user?._id as unknown as mongoose.Types.ObjectId,
   });
 
   const fetchMenu = async () => {
     try {
       setIsLoading(true);
-      const result = await getAllMenuItem();
+      const result = await getMenuByUser(session?.user?._id as string);
       if (result.success && result.data) {
         setMenu(result.data);
       }
@@ -56,6 +67,7 @@ const ChefMenuManagement: React.FC = () => {
           price: 0,
           discription: "",
           category: "",
+          createdBy: session?.user?._id as unknown as mongoose.Types.ObjectId,
         });
         setIsAdding(false);
       } else {
