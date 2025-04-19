@@ -16,3 +16,18 @@ export const getuser = async (email:string) => {
     return { success: false, msg: error };
   }
 };
+
+
+export const getChefs = async () => {
+  await dbConnect();
+  try {
+    const chefs = await User.find({ role: "chef" }).lean().exec();
+    if (!chefs) throw new Error("No chefs found");
+    const chefsData = JSON.parse(JSON.stringify(chefs));
+    return { success: true, data: chefsData };
+  } catch (error) {
+    console.error(error);
+    return { success: false, msg: error };
+  }
+};
+

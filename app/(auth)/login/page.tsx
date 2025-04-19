@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,11 +13,13 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Mail, Lock, ChefHat} from "lucide-react";
+import { Mail, Lock, ChefHat } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { data: session } = useSession();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +31,12 @@ const LoginPage: React.FC = () => {
 
     if (result?.error) {
       console.log("error:", result.error);
+    }
+
+    if (session?.user.role === "chef") {
+      redirect("/chef/dashboard");
+    } else {
+      redirect("/user/dashboard");
     }
   };
 

@@ -54,7 +54,7 @@ export default function PlaceOrder() {
 
   const placeOrder = () => {
     alert("Order placed successfully!");
-    redirect("/thank-you");
+    redirect("/user/menu/thank-you");
   };
 
   return (

@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IOrder extends Document {
+  createdAt: string;
   user: mongoose.Types.ObjectId;
   items: mongoose.Types.ObjectId[];
   totalAmount: number;

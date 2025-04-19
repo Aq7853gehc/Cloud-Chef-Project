@@ -117,7 +117,7 @@ export default function Dashboard() {
       }
     };
     fun();
-  });
+  },[session?.user.email,router]);
 
   return (
     <div className="min-h-screen bg-gray-50 w-full">

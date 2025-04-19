@@ -37,11 +37,6 @@ const items = [
     icon: ChefHat,
   },
   {
-    title: "Chef Update",
-    url: "/user/chef-update",
-    icon: ChefHat,
-  },
-  {
     title: "Subscription Plan",
     url: "/user/subplane",
     icon: CreditCard,
