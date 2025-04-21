@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
     });
 
     if (result?.error) {
-      console.log("error:", result.error);
+          console.log("error:", result.error);
     }
 
     if (session?.user.role === "chef") {

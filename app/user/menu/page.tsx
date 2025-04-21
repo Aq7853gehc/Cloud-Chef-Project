@@ -30,7 +30,6 @@ export default function MenuPage() {
       const result = await getAllMenuItem();
       if (result.success && result.data) {
         setMenu(result.data);
-        console.log(result.data);
       }
     } catch (error) {
       console.error("Failed to fetch menu:", error);

@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import { IOrder } from "@/models/order.models";
 export default function PlaceOrder() {
   const { data: session } = useSession();
   // const router = useRouter();
-
+  
   const [data, setData] = useState<IOrder>();
   useEffect(() => {
     if (
@@ -45,10 +46,6 @@ export default function PlaceOrder() {
     fetchData();
   }, [session?.user._id]);
 
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
-  // };
-
   const placeOrder = () => {
     alert("Order placed successfully!");
     redirect("/user/menu/thank-you");
@@ -76,33 +73,24 @@ export default function PlaceOrder() {
           Order Summary
         </h3>
         <div className="space-y-4">
-          {data?.items.map((item) => (
+          {/* {data?.items.map((item) => (
             <div
-              key={item?._id as unknown as string}
-              className="flex items-center justify-between border-b pb-3 w-full"
+              key={item?.id}
+              className="flex items-center justify-between border-b pb-3"
             >
-              <div className="flex justify-between items-center w-full">
-                {/* @ts-expect-error this is not a problem */}
-                <h4 className="text-gray-900 font-medium">{`${item?.title}`}</h4>
-                <p className="text-gray-500 text-base">
-                  {/* @ts-expect-error this is not a problem */}$
-                  {item?.price.toFixed(2)}
+              <div className="flex-1 pl-3">
+                <h4 className="text-gray-900 font-medium">{item?.title}</h4>
+                <p className="text-gray-500 text-sm">
+                  ${item?.price.toFixed(2)}
                 </p>
               </div>
+             
             </div>
-          ))}
-          <div className="flex items-center justify-between mt-4">
-            <span className="text-lg font-medium text-gray-900">Delivery Fee:</span>
-            <span className="text-xl font-bold text-gray-900">
-              ${2.99}
-            </span>
-          </div>
+          ))} */}
         </div>
         <div className="flex items-center justify-between mt-4">
           <span className="text-lg font-medium text-gray-900">Total:</span>
-          <span className="text-xl font-bold text-gray-900">
-            ${data?.totalAmount}
-          </span>
+          <span className="text-xl font-bold text-gray-900">${data?.totalAmount}</span>
         </div>
       </motion.div>
 
