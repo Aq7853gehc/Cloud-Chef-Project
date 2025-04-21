@@ -2,7 +2,7 @@
 
 import { JSX, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Truck, RefreshCcw, CheckCircle, Clock, Utensils, ChevronDown, XCircle } from "lucide-react";
+import { Truck, RefreshCcw, CheckCircle, Clock, Utensils, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { IOrder } from "@/models/order.models";
@@ -90,6 +90,7 @@ export default function OrdersPage() {
     const response = await getOrderDetail(session.user._id);
     if (!response.success) return console.log(response.error);
     if (response.data) setOrders(response.data);
+    console.log(response.data);
   };
 
   useEffect(() => {
@@ -115,10 +116,6 @@ export default function OrdersPage() {
             <Utensils className="w-8 h-8 text-primary" />
             Order History
           </h1>
-          <Button variant="outline" className="gap-2">
-            Filter Orders
-            <ChevronDown className="w-4 h-4" />
-          </Button>
         </div>
 
         <div className="space-y-4">
@@ -148,9 +145,11 @@ export default function OrdersPage() {
                         <h4 className="text-sm font-medium text-gray-700">Items:</h4>
                         <ul className="mt-1 space-y-1">
                           {(order.items as unknown as OrderItem[]).map((item) => (
-                            <li key={item._id} className="text-sm text-gray-600">
+                            <>
+                            <li key={item._id  as string} className="text-sm text-gray-600">
                               • {item.title} - ${item.price.toFixed(2)} ({item.type})
                             </li>
+                            </>
                           ))}
                         </ul>
                       </div>

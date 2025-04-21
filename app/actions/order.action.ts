@@ -40,7 +40,7 @@ export const getOrderDetail = async (
   await dbConnect();
   try {
     if (!userId) throw new Error("User id must be here");
-    const result = await Order.find({ user: userId }).populate("items").exec();
+    const result = await Order.find({ user: userId }).populate("items").sort({createdAt:-1}).exec();
     if (!result) throw new Error("No data found");
     const plainText = JSON.parse(JSON.stringify(result));
     return { success: true, data: plainText };

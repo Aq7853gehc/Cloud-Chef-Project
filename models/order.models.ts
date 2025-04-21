@@ -18,7 +18,7 @@ const OrderSchema: Schema = new Schema<IOrder>(
     items: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Menu',
+        ref: 'Cart',
         required: true
       }
     ],
