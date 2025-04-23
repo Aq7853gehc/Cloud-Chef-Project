@@ -16,6 +16,7 @@ export type OrderI = {
 
   totalAmount: number;
   status: "pending" | "completed" | "canceled";
+  message?:string
 };
 
 export interface IUser extends Document {
@@ -37,6 +38,7 @@ export interface IOrder extends Document {
   items: mongoose.Types.ObjectId[];
   totalAmount: number;
   status: "pending" | "completed" | "canceled";
+  message?:string
   createdAt: Date;
   updatedAt: Date;
 }

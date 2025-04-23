@@ -36,8 +36,8 @@ export default function PlaceOrder() {
     try {
       const result = await getLatestOrders(session.user._id);
       if (!result) throw new Error("Result not found");
-      // console.log(result.data[0]);
       if (result.data) {
+        console.log(result.data[0]);
         setData(result.data[0]);
       }
     } catch (error) {
@@ -81,8 +81,8 @@ export default function PlaceOrder() {
               key={item._id as string}
               className="flex items-center justify-between border-b pb-3"
             >
-              <div className="flex-1 pl-3">
-                {/* <h4 className="text-gray-900 font-medium">{item.title}</h4> */}
+              <div className="flex items-center justify-between pl-2 w-full">
+                <h4 className="text-gray-900 font-medium">{`*${item.title}`}</h4> 
                 <p className="text-gray-500 text-sm">
                   ₹{item?.price.toFixed(2)}
                 </p>

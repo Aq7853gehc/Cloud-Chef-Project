@@ -13,9 +13,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { IOrder } from "@/types/type";
-import { deleteOrder, getOrderDetail } from "@/app/actions/order.action";
+import {
+  getOrderDetail,
+  updateStatus,
+} from "@/app/actions/order.action";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
 // ... (Keep StatusConfig, OrderItem, StatusIndicator, getOrderProgress interfaces and functions same as before)
@@ -145,17 +148,16 @@ const SkeletonLoader = () => (
 
 export default function OrdersPage() {
   const [trackingInfo, setTrackingInfo] = useState<{ [key: string]: boolean }>(
-    {},
+    {}
   );
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
-const router = useRouter()
   const fetchOrders = async () => {
     try {
       if (!session?.user._id) {
-        redirect("/login")
-      };
+        redirect("/login");
+      }
       const response = await getOrderDetail(session.user._id);
       if (response.data) {
         console.log(response.data);
@@ -167,21 +169,31 @@ const router = useRouter()
       setIsLoading(false);
     }
   };
-const {toast} = useToast();
-  const deleteorder = async(orderid:string)=>{
+
+  const { toast } = useToast();
+  const updateOrder = async (orderId: string, status: string) => {
     try {
-      const response = await deleteOrder(orderid);
-      if (response.success) {
-        toast({
-          title: response.message
-        })
-        router.refresh()
+      if (status === "canceled") {
+        const response = await updateStatus(
+          orderId,
+          status,
+          "Canceled By Customer"
+        );
+        if (!response.success) throw new Error(response.message);
+        toast({ title: response.message });
+      } else {
+        const response = await updateStatus(orderId, status);
+        if (!response.success) throw new Error(response.message);
+        toast({ title: response.message });
       }
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-  
+  };
+
   useEffect(() => {
     fetchOrders();
   }, [session?.user._id]);
@@ -222,7 +234,7 @@ const {toast} = useToast();
           >
             {orders?.map((order) => {
               const { timeline, progress, trackingMessage } = getOrderProgress(
-                order.status,
+                order.status
               );
 
               return (
@@ -267,8 +279,11 @@ const {toast} = useToast();
                                     {item.type}
                                   </span>
                                 </motion.li>
-                              ),
+                              )
                             )}
+                        <div>
+                          {order.message && (<span className="text-base text-red-500 font-light">{order.message}</span>)}
+                        </div>
                           </ul>
                         </div>
                       </div>
@@ -285,6 +300,7 @@ const {toast} = useToast();
                             ₹{order.totalAmount.toFixed(2)}
                           </p>
                         </motion.div>
+                       
                         <div className="flex gap-2">
                           <Button
                             onClick={() =>
@@ -305,7 +321,13 @@ const {toast} = useToast();
                           </Button>
                           <Button
                             className="gap-2 px-4 bg-red-600 hover:bg-red-700 transition-transform hover:scale-105"
-                            onClick={()=>deleteorder(order._id as string)}
+                            onClick={() =>
+                              updateOrder(order._id as string, "canceled")
+                            }
+                            disabled={
+                              order.status === "canceled" ||
+                              order.status === "completed"
+                            }
                           >
                             <Trash className="w-5 h-5" />
                             Cancel
@@ -350,7 +372,11 @@ const {toast} = useToast();
                                     >
                                       <motion.div
                                         className={`w-8 h-8 rounded-full flex items-center justify-center
-                                          ${index * 33 <= progress ? "bg-primary text-white" : "bg-gray-200 text-gray-500"}
+                                          ${
+                                            index * 33 <= progress
+                                              ? "bg-primary text-white"
+                                              : "bg-gray-200 text-gray-500"
+                                          }
                                           transition-colors duration-300`}
                                       >
                                         {index + 1}

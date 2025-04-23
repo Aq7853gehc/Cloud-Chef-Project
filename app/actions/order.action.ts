@@ -4,7 +4,7 @@ import dbConnect from "@/lib/dbConnect";
 import { CartItem } from "../user/menu/page";
 import { Order } from "@/models/order.models";
 import { revalidatePath } from "next/cache";
-import { OrderI,IOrder } from "@/types/type";
+import { OrderI, IOrder } from "@/types/type";
 
 type addOrderProps = {
   user: string;
@@ -12,7 +12,7 @@ type addOrderProps = {
   totalAmount: number;
 };
 export const addOrder = async (
-  data: addOrderProps,
+  data: addOrderProps
 ): Promise<{
   success: boolean;
   message?: string;
@@ -33,7 +33,7 @@ export const addOrder = async (
 };
 
 export const getOrderDetail = async (
-  userId: string,
+  userId: string
 ): Promise<{
   success: boolean;
   data?: IOrder[];
@@ -53,7 +53,7 @@ export const getOrderDetail = async (
 };
 
 export const getLatestOrders = async (
-  userId: string,
+  userId: string
 ): Promise<{
   success: boolean;
   data?: OrderI[];
@@ -84,7 +84,7 @@ export const getLatestOrders = async (
 };
 
 export const deleteOrder = async (
-  orderId: string,
+  orderId: string
 ): Promise<{
   success: boolean;
   message?: string;
@@ -106,7 +106,7 @@ export const deleteOrder = async (
 export const getAllOrder = async (): Promise<{
   success: boolean;
   data?: OrderI[];
-  error?: string; 
+  error?: string;
 }> => {
   await dbConnect();
   try {
@@ -120,5 +120,31 @@ export const getAllOrder = async (): Promise<{
   } catch (error) {
     console.error(error);
     return { success: false, error: `${error}` };
+  }
+};
+
+export const updateStatus = async (
+  orderId: string,
+  changeStatus: string,
+  messageUpdate?: string
+): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  await dbConnect();
+  try {
+    const res = await Order.find({ _id: orderId });
+    if (!res) throw new Error("No order found");
+    const updated = await Order.updateOne(
+      { _id: orderId },
+      { $set: { status: changeStatus, message: messageUpdate } }
+    );
+    if (!updated.acknowledged)
+      throw new Error("Order is not updated. Try again");
+    revalidatePath("/user/order", "page");
+    return { success: true, message: `Order updated to ${changeStatus} ` };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: `${error}` };
   }
 };

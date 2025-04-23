@@ -25,6 +25,9 @@ const OrderSchema: Schema = new Schema<IOrder>(
       type: String,
       enum: ['pending', 'completed', 'canceled'],
       default: 'pending'
+    },
+    message:{
+      type:String,
     }
   },
   { timestamps: true }

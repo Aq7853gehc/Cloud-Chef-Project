@@ -2,13 +2,11 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle,  Utensils, Flame, Leaf } from "lucide-react";
-import { getAllOrder,  } from "@/app/actions/order.action";
+import { CheckCircle, Utensils, Flame, Leaf } from "lucide-react";
+import { getAllOrder, updateStatus } from "@/app/actions/order.action";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { OrderI } from "@/types/type";
-
-
 
 const ChefOrderManagement: React.FC = () => {
   const [orders, setOrders] = useState<OrderI[]>([]);
@@ -28,20 +26,31 @@ const ChefOrderManagement: React.FC = () => {
     }
   };
 
-  // const handleStatusUpdate = async (orderId: string, newStatus: 'pending' | 'completed' | 'canceled') => {
-  //   try {
-  //     const response = await updateOrderStatus(orderId, newStatus);
-  //     if (!response.success) throw new Error("Status update failed");
-      
-  //     setOrders(prev => prev.map(order => 
-  //       order._id === orderId ? { ...order, status: newStatus } : order
-  //     ));
-  //     toast.success(`Order marked as ${newStatus}`);
-  //   } catch (error) {
-  //     toast.error("Failed to update status");
-  //     console.error(error);
-  //   }
-  // };
+  const handleStatusUpdate = async (
+    orderId: string,
+    newStatus: "pending" | "completed" | "canceled"
+  ) => {
+    try {
+      if (newStatus === "canceled") {
+        const response = await updateStatus(
+          orderId,
+          newStatus,
+          "Canceled by Chef"
+        );
+        if (!response.success) throw new Error("Status update failed");
+      }
+
+      setOrders((prev) =>
+        prev.map((order) =>
+          order._id === orderId ? { ...order, status: newStatus } : order
+        )
+      );
+      toast.success(`Order marked as ${newStatus}`);
+    } catch (error) {
+      toast.error("Failed to update status");
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     fetchOrders();
@@ -68,18 +77,23 @@ const ChefOrderManagement: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders
+          .filter((order) => order.status === "pending")
           .map((order) => (
-            <Card 
+            <Card
               key={order._id as string}
               className="relative overflow-hidden border-l-4 shadow-sm transition-all"
               data-status={order.status}
             >
               <div className="absolute top-0 right-0 p-2 text-xs font-medium">
-                <span className={`px-2 py-1 rounded-full ${
-                  order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                  order.status === 'canceled' ? 'bg-red-100 text-red-800' :
-                  'bg-yellow-100 text-yellow-800'
-                }`}>
+                <span
+                  className={`px-2 py-1 rounded-full ${
+                    order.status === "completed"
+                      ? "bg-green-100 text-green-800"
+                      : order.status === "canceled"
+                      ? "bg-red-100 text-red-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
                   {order.status}
                 </span>
               </div>
@@ -98,24 +112,25 @@ const ChefOrderManagement: React.FC = () => {
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-500">Customer ID:</span>
+                    <span className="text-sm font-medium text-gray-500">
+                      Customer ID:
+                    </span>
                     <span className="text-sm text-gray-700">
                       {order.user.slice(-6)}
                     </span>
                   </div>
 
                   <div className="border-t pt-2">
-                    <h4 className="text-sm font-medium text-gray-500 mb-2">Order Details:</h4>
+                    <h4 className="text-sm font-medium text-gray-500 mb-2">
+                      Order Details:
+                    </h4>
                     <ul className="space-y-3">
                       {order.items.map((item, index) => (
-                        <li 
-                          key={index}
-                          className="text-sm text-gray-700"
-                        >
+                        <li key={index} className="text-sm text-gray-700">
                           <div className="flex justify-between items-start">
                             <div>
                               <div className="font-medium flex items-center gap-2">
-                                {item.type === 'Non-Veg' ? (
+                                {item.type === "Non-Veg" ? (
                                   <Flame className="w-4 h-4 text-red-600" />
                                 ) : (
                                   <Leaf className="w-4 h-4 text-green-600" />
@@ -145,19 +160,21 @@ const ChefOrderManagement: React.FC = () => {
                     </span>
                   </div>
 
-                  {order.status === 'pending' && (
+                  {order.status === "pending" && (
                     <div className="pt-4 flex gap-2 justify-end">
-                      <Button
+                      {/* <Button
                         variant="outline"
                         size="sm"
-                        // onClick={() => handleStatusUpdate(order._id, 'canceled')}
+                        onClick={() => handleStatusUpdate(order._id, 'canceled')}
                       >
                         <XCircle className="w-4 h-4 mr-2" />
                         Cancel
-                      </Button>
+                      </Button> */}
                       <Button
                         size="sm"
-                        // onClick={() => handleStatusUpdate(order._id, 'completed')}
+                        onClick={() =>
+                          handleStatusUpdate(order._id, "completed")
+                        }
                       >
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Complete
@@ -169,7 +186,7 @@ const ChefOrderManagement: React.FC = () => {
             </Card>
           ))}
 
-        {orders.filter(order => order.status === 'pending').length === 0 && (
+        {orders.filter((order) => order.status === "pending").length === 0 && (
           <div className="col-span-full text-center py-12">
             <div className="text-gray-500 mb-4">No pending orders</div>
             <Utensils className="w-12 h-12 mx-auto text-gray-400" />
