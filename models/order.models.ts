@@ -1,12 +1,7 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { IOrder } from '@/types/type';
 
-export interface IOrder extends Document {
-  createdAt: string;
-  user: mongoose.Types.ObjectId;
-  items: mongoose.Types.ObjectId[];
-  totalAmount: number;
-  status: 'pending' | 'completed' | 'canceled';
-}
+
 
 const OrderSchema: Schema = new Schema<IOrder>(
   {
@@ -18,7 +13,7 @@ const OrderSchema: Schema = new Schema<IOrder>(
     items: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Cart',
+        ref: 'Menu',
         required: true
       }
     ],

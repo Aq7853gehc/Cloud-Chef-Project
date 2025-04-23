@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { getLatestOrders } from "@/app/actions/order.action";
 import { useSession } from "next-auth/react";
-import { IOrder } from "@/models/order.models";
+import { OrderI } from "@/types/type";
 
 export default function PlaceOrder() {
   const { data: session } = useSession();
   // const router = useRouter();
-  
-  const [data, setData] = useState<IOrder>();
+
+  const [data, setData] = useState<OrderI>();
   useEffect(() => {
     if (
       !session?.user._id ||
@@ -36,7 +36,10 @@ export default function PlaceOrder() {
     try {
       const result = await getLatestOrders(session.user._id);
       if (!result) throw new Error("Result not found");
-      setData(result.data[0]);
+      // console.log(result.data[0]);
+      if (result.data) {
+        setData(result.data[0]);
+      }
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -73,24 +76,25 @@ export default function PlaceOrder() {
           Order Summary
         </h3>
         <div className="space-y-4">
-          {/* {data?.items.map((item) => (
+          {data?.items.map((item) => (
             <div
-              key={item?.id}
+              key={item._id as string}
               className="flex items-center justify-between border-b pb-3"
             >
               <div className="flex-1 pl-3">
-                <h4 className="text-gray-900 font-medium">{item?.title}</h4>
+                {/* <h4 className="text-gray-900 font-medium">{item.title}</h4> */}
                 <p className="text-gray-500 text-sm">
-                  ${item?.price.toFixed(2)}
+                  ₹{item?.price.toFixed(2)}
                 </p>
               </div>
-             
             </div>
-          ))} */}
+          ))}
         </div>
         <div className="flex items-center justify-between mt-4">
           <span className="text-lg font-medium text-gray-900">Total:</span>
-          <span className="text-xl font-bold text-gray-900">${data?.totalAmount}</span>
+          <span className="text-xl font-bold text-gray-900">
+            ₹{data?.totalAmount}
+          </span>
         </div>
       </motion.div>
 

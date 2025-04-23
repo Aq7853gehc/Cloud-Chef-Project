@@ -1,17 +1,8 @@
 // @ts-nocheck
-import mongoose, { Document, model, Schema } from "mongoose";
+import { IUser } from "@/types/type";
+import mongoose, {  model, Schema } from "mongoose";
 
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
-  address?: string; // Optional field
-  role: "chef" | "customer";
-  phone: string;
-  specialty?: string; // Required only for chefs
-  exp?: number; // Required only for chefs
-  bio?: string; // Required only for chefs
-}
+
 const userSchema = new Schema<IUser>({
   name: {
     type: String,

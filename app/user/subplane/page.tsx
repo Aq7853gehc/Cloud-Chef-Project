@@ -13,8 +13,8 @@ export default function SubscriptionInfoPage() {
   });
 
   const billingHistory = [
-    { id: 1, date: "Feb 15, 2024", amount: "$19.99", status: "Paid" },
-    { id: 2, date: "Jan 15, 2024", amount: "$19.99", status: "Paid" },
+    { id: 1, date: "Feb 15, 2024", amount: "₹19.99", status: "Paid" },
+    { id: 2, date: "Jan 15, 2024", amount: "₹19.99", status: "Paid" },
   ];
 
   return (
@@ -24,7 +24,7 @@ export default function SubscriptionInfoPage() {
       <div className="bg-white shadow-md p-6 rounded-lg border ">
         <div className="mb-4">
           <p className="text-gray-700">Plan: {subscription.plan}</p>
-          <p className="text-gray-700">Price: ${subscription.price}/month</p>
+          <p className="text-gray-700">Price: ₹{subscription.price}/month</p>
           <p className="text-gray-700">Expiry Date: {subscription.expiry}</p>
           <p className="text-gray-700 flex items-center">
             Status: <CheckCircle className="w-4 h-4 text-green-500 ml-2" /> {subscription.status}

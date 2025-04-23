@@ -2,8 +2,9 @@
 
 import dbConnect from "@/lib/dbConnect";
 import { CartItem } from "../user/menu/page";
-import { IOrder, Order } from "@/models/order.models";
+import { Order } from "@/models/order.models";
 import { revalidatePath } from "next/cache";
+import { OrderI,IOrder } from "@/types/type";
 
 type addOrderProps = {
   user: string;
@@ -11,7 +12,7 @@ type addOrderProps = {
   totalAmount: number;
 };
 export const addOrder = async (
-  data: addOrderProps
+  data: addOrderProps,
 ): Promise<{
   success: boolean;
   message?: string;
@@ -22,7 +23,8 @@ export const addOrder = async (
     if (!data) throw new Error("No data recieve");
     const result = await Order.create(data);
     if (!result) throw new Error("Order creation fail");
-    revalidatePath("/dashboard");
+    revalidatePath("/user/order");
+    revalidatePath("/user/dashboard");
     return { success: true, message: "Order created successfully" };
   } catch (error) {
     console.error(error);
@@ -31,7 +33,7 @@ export const addOrder = async (
 };
 
 export const getOrderDetail = async (
-  userId: string
+  userId: string,
 ): Promise<{
   success: boolean;
   data?: IOrder[];
@@ -40,7 +42,7 @@ export const getOrderDetail = async (
   await dbConnect();
   try {
     if (!userId) throw new Error("User id must be here");
-    const result = await Order.find({ user: userId }).populate("items").sort({createdAt:-1}).exec();
+    const result = await Order.find({ user: userId }).populate("items").exec();
     if (!result) throw new Error("No data found");
     const plainText = JSON.parse(JSON.stringify(result));
     return { success: true, data: plainText };
@@ -50,13 +52,19 @@ export const getOrderDetail = async (
   }
 };
 
-export const getLatestOrders = async (userId: string) => {
+export const getLatestOrders = async (
+  userId: string,
+): Promise<{
+  success: boolean;
+  data?: OrderI[];
+  message?: string;
+}> => {
   await dbConnect();
 
   try {
     const order = await Order.find({ user: userId })
-      .sort({ createdAt: -1 })
       .populate("items")
+      .sort({ createdAt: -1 })
       .limit(1)
       .exec();
     console.log(order[0].items);
@@ -69,9 +77,48 @@ export const getLatestOrders = async (userId: string) => {
     console.error("Error fetching latest orders:", error);
     return {
       success: false,
-      data: null,
       message:
         error instanceof Error ? error.message : "Failed to fetch orders",
     };
+  }
+};
+
+export const deleteOrder = async (
+  orderId: string,
+): Promise<{
+  success: boolean;
+  message?: string;
+}> => {
+  await dbConnect();
+
+  try {
+    const order = await Order.find({ _id: orderId });
+    if (!order) throw new Error("Order not found");
+    const r = await Order.deleteOne({ _id: orderId });
+    if (!r.acknowledged) throw new Error("Not deleted");
+    return { success: true, message: "Order deleted successfully" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to delete order" };
+  }
+};
+
+export const getAllOrder = async (): Promise<{
+  success: boolean;
+  data?: OrderI[];
+  error?: string; 
+}> => {
+  await dbConnect();
+  try {
+    const resp = await Order.find().populate("items").exec();
+    if (!resp) throw new Error("Not Found");
+    console.log(resp);
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(resp)),
+    };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: `${error}` };
   }
 };

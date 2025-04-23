@@ -1,15 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Plus, Minus, Search, Leaf, Sprout,  ChevronDown, X,  } from "lucide-react";
+import {
+  ShoppingCart,
+  Plus,
+  Minus,
+  Search,
+  Leaf,
+  Sprout,
+  ChevronDown,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { getAllMenuItem } from "@/app/actions/menu.action";
-import { MenuItem } from "@/models/menu.modules";
+import { MenuItem } from "@/types/type";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 import { addOrder } from "@/app/actions/order.action";
 import { useSession } from "next-auth/react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export type CartItem = MenuItem & {
   quantity: number;
@@ -22,8 +32,10 @@ export default function MenuPage() {
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortOption, setSortOption] = useState< string | "default" | "price-asc" | "price-desc">("default");
-  const {data:session} = useSession()
+  const [sortOption, setSortOption] = useState<
+    string | "default" | "price-asc" | "price-desc"
+  >("default");
+  const { data: session } = useSession();
   const fetchMenu = async () => {
     setIsLoading(true);
     try {
@@ -45,13 +57,13 @@ export default function MenuPage() {
   const addToCart = (item: MenuItem) => {
     setCart((currentCart) => {
       const existingItem = currentCart.find(
-        (cartItem) => cartItem.title === item.title
+        (cartItem) => cartItem.title === item.title,
       );
       if (existingItem) {
         return currentCart.map((cartItem) =>
           cartItem.title === item.title
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
+            : cartItem,
         );
       }
       return [...currentCart, { ...item, quantity: 1 }];
@@ -66,21 +78,23 @@ export default function MenuPage() {
         return currentCart.filter((item) => item.title !== itemTitle);
       }
       return currentCart.map((item) =>
-        item.title === itemTitle ? { ...item, quantity: item.quantity - 1 } : item
+        item.title === itemTitle
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
       );
     });
   };
 
   const cartTotal = cart.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   const filteredMenu = menu
     .filter(
       (item) =>
         item.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (filter === "All" || item.type === filter)
+        (filter === "All" || item.type === filter),
     )
     .sort((a, b) => {
       if (sortOption === "price-asc") return a.price - b.price;
@@ -89,39 +103,41 @@ export default function MenuPage() {
     });
 
   const deliveryFee = 2.99;
-  const orderMinimum = 10.00;
+  const orderMinimum = 10.0;
 
-  const placeOrder = async()=>{
+  const placeOrder = async () => {
     try {
-      if (!session?.user._id) throw new Error("No user Id found")
+      if (!session?.user._id) throw new Error("No user Id found");
       const data = {
         user: session?.user._id,
-        items:[...cart],
-        totalAmount:cartTotal+deliveryFee
-      }
-      const result = await addOrder(data)
-      if(!result) throw new Error("")
+        items: [...cart],
+        totalAmount: cartTotal + deliveryFee,
+      };
+      const result = await addOrder(data);
+      if (!result) throw new Error("");
     } catch (error) {
-      console.log(error) 
+      console.log(error);
     }
-  }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white w-full">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-20 border-b border-green-100">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2">
             <Sprout className="text-green-600 h-8 w-8" />
             <h1 className="text-2xl font-bold text-green-800 font-serif">
-            Our Seasonal Menu
+              Our Seasonal Menu
             </h1>
           </Link>
-          
-          <Button 
-            variant="ghost" 
+          <div className="flex gap-5 items-center">
+          <SidebarTrigger />
+
+          <Button
+            variant="ghost"
             className="relative text-green-700 hover:bg-green-50 group"
             onClick={() => setIsCartOpen(!isCartOpen)}
-          >
+            >
             <div className="relative">
               <ShoppingCart className="text-green-600 transition-transform group-hover:scale-110" />
               {cart.length > 0 && (
@@ -131,12 +147,13 @@ export default function MenuPage() {
               )}
             </div>
           </Button>
+              </div>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-4">
         {/* Hero Section */}
-        
+
         {/* Search and Filter */}
         <div className="mb-8 bg-white p-4 rounded-xl shadow-sm border border-green-100">
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
@@ -150,7 +167,7 @@ export default function MenuPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            
+
             <div className="flex flex-wrap gap-2 w-full md:w-auto">
               <Button
                 variant={filter === "All" ? "default" : "outline"}
@@ -174,7 +191,7 @@ export default function MenuPage() {
               >
                 Non-Veg Only
               </Button>
-              
+
               <div className="relative">
                 <select
                   value={sortOption}
@@ -194,11 +211,13 @@ export default function MenuPage() {
         <div className="flex flex-col md:flex-row gap-8">
           {/* Menu Items */}
           <div className="flex-1">
-            
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, index) => (
-                  <div key={index} className="bg-white rounded-xl shadow-sm overflow-hidden border border-green-100">
+                  <div
+                    key={index}
+                    className="bg-white rounded-xl shadow-sm overflow-hidden border border-green-100"
+                  >
                     <div className="p-5 space-y-3">
                       <Skeleton className="h-6 w-3/4" />
                       <Skeleton className="h-4 w-full" />
@@ -214,8 +233,12 @@ export default function MenuPage() {
             ) : filteredMenu.length === 0 ? (
               <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-green-100">
                 <Search className="mx-auto w-10 h-10 text-green-300 mb-4" />
-                <h3 className="text-xl font-semibold text-green-800 mb-2">No items found</h3>
-                <p className="text-gray-600">Try adjusting your search or filters</p>
+                <h3 className="text-xl font-semibold text-green-800 mb-2">
+                  No items found
+                </h3>
+                <p className="text-gray-600">
+                  Try adjusting your search or filters
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -234,8 +257,10 @@ export default function MenuPage() {
                           <h3 className="text-lg font-semibold text-green-900">
                             {item.title}
                           </h3>
-                          <Badge 
-                            variant={item.type === "Veg" ? "default" : "secondary"} 
+                          <Badge
+                            variant={
+                              item.type === "Veg" ? "default" : "secondary"
+                            }
                             className={`text-xs ${item.type === "Veg" ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"}`}
                           >
                             {item.type}
@@ -244,11 +269,10 @@ export default function MenuPage() {
                         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                           {item.discription}
                         </p>
-                        {/* @ts-expect-error this is not the problem */}
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{`Made By:- Chef ${item.createdBy.name}`}</p>
+                        
                         <div className="flex items-center justify-between">
                           <span className="text-lg font-bold text-green-700">
-                            ${item.price.toFixed(2)}
+                            ₹{item.price.toFixed(2)}
                           </span>
                           <Button
                             size="sm"
@@ -279,12 +303,14 @@ export default function MenuPage() {
                   </span>
                 )}
               </div>
-              
+
               {cart.length === 0 ? (
                 <div className="text-center py-8">
                   <ShoppingCart className="mx-auto w-10 h-10 text-green-200 mb-2" />
                   <p className="text-gray-500">Your cart is empty</p>
-                  <p className="text-sm text-gray-400 mt-1">Add items to get started</p>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Add items to get started
+                  </p>
                 </div>
               ) : (
                 <>
@@ -301,9 +327,11 @@ export default function MenuPage() {
                           <Leaf className="w-5 h-5" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-green-900">{item.title}</h4>
+                          <h4 className="font-medium text-green-900">
+                            {item.title}
+                          </h4>
                           <p className="text-sm text-green-600">
-                            ${item.price.toFixed(2)}
+                            ₹{item.price.toFixed(2)}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -330,29 +358,34 @@ export default function MenuPage() {
                       </motion.div>
                     ))}
                   </div>
-                  
+
                   <div className="mt-6 pt-4 border-t border-green-100">
                     <div className="space-y-2 mb-4">
                       <div className="flex justify-between text-green-700">
                         <span>Subtotal</span>
-                        <span className="font-medium">${cartTotal.toFixed(2)}</span>
+                        <span className="font-medium">
+                          ₹{cartTotal.toFixed(2)}
+                        </span>
                       </div>
                       <div className="flex justify-between text-green-700">
                         <span>Delivery</span>
-                        <span className="font-medium">${deliveryFee.toFixed(2)}</span>
+                        <span className="font-medium">
+                          ₹{deliveryFee.toFixed(2)}
+                        </span>
                       </div>
                       {cartTotal < orderMinimum && (
                         <div className="text-sm text-amber-600 bg-amber-50 p-2 rounded">
-                          Add ${(orderMinimum - cartTotal).toFixed(2)} more to place order
+                          Add ₹{(orderMinimum - cartTotal).toFixed(2)} more to
+                          place order
                         </div>
                       )}
                     </div>
                     <div className="flex justify-between text-lg font-bold mb-6 text-green-800">
                       <span>Total</span>
-                      <span>${(cartTotal + deliveryFee).toFixed(2)}</span>
+                      <span>₹{(cartTotal + deliveryFee).toFixed(2)}</span>
                     </div>
                     <Link href="/user/menu/checkout">
-                      <Button 
+                      <Button
                         className="w-full bg-green-600 hover:bg-green-700 shadow-sm"
                         disabled={cartTotal < orderMinimum}
                         onClick={placeOrder}
@@ -377,7 +410,7 @@ export default function MenuPage() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 md:hidden"
           >
-            <div 
+            <div
               className="absolute inset-0 bg-black/30"
               onClick={() => setIsCartOpen(false)}
             />
@@ -390,8 +423,8 @@ export default function MenuPage() {
             >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold text-green-800">Your Order</h3>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   size="icon"
                   onClick={() => setIsCartOpen(false)}
                   className="text-green-600 hover:bg-green-50"
@@ -399,7 +432,7 @@ export default function MenuPage() {
                   <X className="w-5 h-5" />
                 </Button>
               </div>
-              
+
               {cart.length === 0 ? (
                 <div className="text-center py-8">
                   <ShoppingCart className="mx-auto w-10 h-10 text-green-200 mb-2" />
@@ -419,9 +452,11 @@ export default function MenuPage() {
                           <Leaf className="w-5 h-5" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-green-900">{item.title}</h4>
+                          <h4 className="font-medium text-green-900">
+                            {item.title}
+                          </h4>
                           <p className="text-sm text-green-600">
-                            ${item.price.toFixed(2)}
+                            ₹{item.price.toFixed(2)}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -448,29 +483,30 @@ export default function MenuPage() {
                       </motion.div>
                     ))}
                   </div>
-                  
+
                   <div className="border-t border-green-100 pt-4">
                     <div className="space-y-2 mb-4">
                       <div className="flex justify-between text-green-700">
                         <span>Subtotal</span>
-                        <span>${cartTotal.toFixed(2)}</span>
+                        <span>₹{cartTotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-green-700">
                         <span>Delivery</span>
-                        <span>${deliveryFee.toFixed(2)}</span>
+                        <span>₹{deliveryFee.toFixed(2)}</span>
                       </div>
                       {cartTotal < orderMinimum && (
                         <div className="text-sm text-amber-600 bg-amber-50 p-2 rounded">
-                          Add ${(orderMinimum - cartTotal).toFixed(2)} more to order
+                          Add ₹{(orderMinimum - cartTotal).toFixed(2)} more to
+                          order
                         </div>
                       )}
                     </div>
                     <div className="flex justify-between mb-4 font-bold text-lg text-green-800">
                       <span>Total</span>
-                      <span>${(cartTotal + deliveryFee).toFixed(2)}</span>
+                      <span>₹{(cartTotal + deliveryFee).toFixed(2)}</span>
                     </div>
                     <Link href="/user/menu/checkout">
-                      <Button 
+                      <Button
                         className="w-full bg-green-600 hover:bg-green-700 shadow-sm"
                         disabled={cartTotal < orderMinimum}
                         onClick={() => setIsCartOpen(false)}

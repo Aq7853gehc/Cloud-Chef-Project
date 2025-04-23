@@ -14,21 +14,7 @@ export default function Home() {
         <div className="flex items-center gap-3 text-3xl font-bold text-gray-800">
           <ChefHat className="h-8 w-8 text-green-500" /> CloudChef
         </div>
-        <div className="flex gap-4">
-          {/* <Button
-            variant="outline"
-            className="text-gray-700 hover:text-green-500 hover:bg-white  border-green-500"
-            asChild
-          >
-            <Link href="/login">Login</Link>
-          </Button>
-          <Button
-            className="bg-green-500 hover:bg-green-400 text-white"
-            asChild
-          >
-            <Link href="/register">Sign Up</Link>
-          </Button> */}
-        </div>
+        
       </nav>
 
       {/* Hero Section */}

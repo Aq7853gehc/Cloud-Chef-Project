@@ -50,12 +50,12 @@ const ChefSubscriptionEarnings = () => {
             <CardTitle className="text-xl font-bold">Earnings</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-700 font-medium">Total Earnings: ${earnings.totalEarnings}</p>
+            <p className="text-gray-700 font-medium">Total Earnings: ₹{earnings.totalEarnings}</p>
             <p className="text-gray-600">Recent Transactions:</p>
             <ul className="mt-3 text-gray-700">
               {earnings.recentTransactions.map((txn) => (
                 <li key={txn.id} className="border-b py-2">
-                  {txn.date} - ${txn.amount}
+                  {txn.date} - ₹{txn.amount}
                 </li>
               ))}
             </ul>

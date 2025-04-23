@@ -1,13 +1,6 @@
+import { MenuItem } from "@/types/type";
 import mongoose, { Document } from "mongoose";
 import { model, Schema } from "mongoose";
-export interface MenuItem {
-  title: string;
-  type: "Veg" | "Non-Veg";
-  price: number;
-  discription: string;
-  category: string;
-  createdBy: mongoose.Types.ObjectId;
-}
 
 export interface Imenu extends MenuItem,Document {
 }

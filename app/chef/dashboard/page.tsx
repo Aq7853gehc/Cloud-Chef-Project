@@ -36,7 +36,7 @@ import {
 import { useEffect, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { getuser } from "@/app/actions/user.action";
-import { IUser } from "@/models/user.models";
+import { IUser } from "@/types/type";
 const recipes = [
   {
     name: "Razma Chaval",
@@ -218,7 +218,7 @@ export default function Dashboard() {
             {
               icon: TrendingUp,
               label: "Revenue",
-              value: "$12.5k",
+              value: "₹12.5k",
               trend: "↑ 18% monthly growth",
             },
             {

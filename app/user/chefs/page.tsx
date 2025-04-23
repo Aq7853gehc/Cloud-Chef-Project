@@ -8,7 +8,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { getChefs } from "@/app/actions/user.action";
-import { IUser } from "@/models/user.models";
+import { IUser } from "@/types/type";
 
 
 export default function ChefsPage() {
@@ -31,16 +31,14 @@ export default function ChefsPage() {
             <ChefHat className="w-10 h-10 text-primary" />
             Top Chefs Near You
           </h1>
-          <Button variant="outline" className="gap-2">
-            View All <ChevronRight className="w-4 h-4" />
-          </Button>
+          
         </div>
 
         {/* Chef Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {chefs.map((chef) => (
             <motion.div
-              key={chef._id as string}
+              key={chef._id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}

@@ -1,7 +1,8 @@
 "use server";
 
 import dbConnect from "@/lib/dbConnect";
-import { Menu, MenuItem } from "@/models/menu.modules";
+import { Menu } from "@/models/menu.modules";
+import { MenuItem } from "@/types/type";
 
 export const getAllMenuItem = async (): Promise<{
   success: boolean;

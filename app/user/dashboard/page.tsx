@@ -35,7 +35,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useEffect, useState } from "react";
 import { getuser } from "@/app/actions/user.action";
 import { redirect, useRouter } from "next/navigation";
-import { IUser } from "@/models/user.models";
+import { IUser } from "@/types/type";
 const pastOrders = [
   {
     name: "Spaghetti Carbonara",
