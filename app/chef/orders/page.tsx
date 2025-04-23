@@ -2,15 +2,16 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Utensils, Flame, Leaf } from "lucide-react";
+import { CheckCircle, Utensils, Flame, Leaf, XCircle } from "lucide-react";
 import { getAllOrder, updateStatus } from "@/app/actions/order.action";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { OrderI } from "@/types/type";
-
+import { useSession } from "next-auth/react";
 const ChefOrderManagement: React.FC = () => {
   const [orders, setOrders] = useState<OrderI[]>([]);
   const [loading, setLoading] = useState(true);
+  const {data:session} = useSession();
 
   const fetchOrders = async () => {
     try {
@@ -36,6 +37,13 @@ const ChefOrderManagement: React.FC = () => {
           orderId,
           newStatus,
           "Canceled by Chef"
+        );
+        if (!response.success) throw new Error("Status update failed");
+      }else{
+        const response = await updateStatus(
+          orderId,
+          newStatus,
+          `Completed by Chef ${session?.user?.name}`
         );
         if (!response.success) throw new Error("Status update failed");
       }
@@ -162,14 +170,14 @@ const ChefOrderManagement: React.FC = () => {
 
                   {order.status === "pending" && (
                     <div className="pt-4 flex gap-2 justify-end">
-                      {/* <Button
+                      <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleStatusUpdate(order._id, 'canceled')}
                       >
                         <XCircle className="w-4 h-4 mr-2" />
                         Cancel
-                      </Button> */}
+                      </Button>
                       <Button
                         size="sm"
                         onClick={() =>

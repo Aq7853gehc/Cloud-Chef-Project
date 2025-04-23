@@ -282,7 +282,7 @@ export default function OrdersPage() {
                               )
                             )}
                         <div>
-                          {order.message && (<span className="text-base text-red-500 font-light">{order.message}</span>)}
+                          {order.message && (<span className={`text-base ${order.status === "canceled" ? "text-red-500" : "text-green-500"} font-light`}>{order.message}</span>)}
                         </div>
                           </ul>
                         </div>
