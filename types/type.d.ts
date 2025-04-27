@@ -51,3 +51,15 @@ export interface MenuItem {
   category: string;
   createdBy: mongoose.Types.ObjectId;
 }
+
+
+
+export interface IChef extends Document {
+  user: mongoose.Types.ObjectId;
+  menu: mongoose.Types.ObjectId[];
+  rating: number;
+  createdAt: Date;
+  updatedAt: Date;
+  acceptedOrders: mongoose.Types.ObjectId[];
+}
+

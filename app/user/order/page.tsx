@@ -13,10 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { IOrder } from "@/types/type";
-import {
-  getOrderDetail,
-  updateStatus,
-} from "@/app/actions/order.action";
+import { getOrderDetail, updateStatus } from "@/app/actions/order.action";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -248,12 +245,24 @@ export default function OrdersPage() {
                   <div className="p-6">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                       {/* Order Info Section */}
-                      <div className="space-y-2 flex-1">
+                      <div className="space-y-2 flex-1 relative">
                         <div className="flex items-center gap-3">
                           <h3 className="text-xl font-semibold text-gray-900">
                             Order #{(order._id as string).slice(-6)}
                           </h3>
                           <StatusIndicator status={order.status} />
+                          {order?.message && (
+                            <Badge
+                              variant={"outline"}
+                              className={`gap-2 ${
+                                order.status === "canceled"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-green-100 text-green-800"
+                              }`}
+                            >
+                              {order.message}
+                            </Badge>
+                          )}
                         </div>
                         <p className="text-sm text-gray-500">
                           {/* {formatDate(order.createdAt.toString())} */}
@@ -281,9 +290,6 @@ export default function OrdersPage() {
                                 </motion.li>
                               )
                             )}
-                        <div>
-                          {order.message && (<span className={`text-base ${order.status === "canceled" ? "text-red-500" : "text-green-500"} font-light`}>{order.message}</span>)}
-                        </div>
                           </ul>
                         </div>
                       </div>
@@ -300,7 +306,7 @@ export default function OrdersPage() {
                             ₹{order.totalAmount.toFixed(2)}
                           </p>
                         </motion.div>
-                       
+
                         <div className="flex gap-2">
                           <Button
                             onClick={() =>
