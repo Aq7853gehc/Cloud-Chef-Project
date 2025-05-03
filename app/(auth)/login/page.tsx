@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { data: session } = useSession();
-
+  const [error, setError] = useState("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await signIn("credentials", {
@@ -30,7 +30,12 @@ const LoginPage: React.FC = () => {
     });
 
     if (result?.error) {
-          console.log("error:", result.error);
+          console.log("error:", result?.error);
+          setError(result.error)
+          if (result.error === 'CredentialsSignin')
+            setError("NO USER FOUND")
+          return;
+
     }
 
     if (session?.user.role === "chef") {
@@ -96,6 +101,9 @@ const LoginPage: React.FC = () => {
           </form>
         </CardContent>
 
+    {error?.length > 0 && (
+      <p className="text-xs font-semibold text-red-500 text-center">{error}</p>
+    )}
         <CardFooter className="flex justify-center p-6 bg-green-50/50">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{" "}
