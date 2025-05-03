@@ -124,7 +124,7 @@ const ChefOrderManagement: React.FC = () => {
                       Customer ID:
                     </span>
                     <span className="text-sm text-gray-700">
-                      {order.user.slice(-6)}
+                      {order.user._id.slice(-6)}
                     </span>
                   </div>
 

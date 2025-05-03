@@ -23,6 +23,7 @@ export const getChefs = async () => {
   try {
     const chefs = await User.find({ role: "chef" }).lean().exec();
     if (!chefs) throw new Error("No chefs found");
+    console.log(chefs);
     const chefsData = JSON.parse(JSON.stringify(chefs));
     return { success: true, data: chefsData };
   } catch (error) {
@@ -31,3 +32,16 @@ export const getChefs = async () => {
   }
 };
 
+
+
+export const getTotalChef = async () => {
+  await dbConnect();
+  try {
+    const totalChef = await User.countDocuments({ role: "chef" });
+    if (!totalChef) throw new Error("No chef found");
+    return { success: true, data: totalChef };
+  } catch (error) {
+    console.error(error);
+    return { success: false, msg: error };
+  }
+};  

@@ -3,7 +3,18 @@ import mongoose  from "mongoose";
 export type OrderI = {
   createdAt: Date;
   _id: string;
-  user: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+    password: string;
+    address?: string; // Optional field
+    role: "chef" | "customer";
+    phone: string;
+    specialty?: string; // Required only for chefs
+    exp?: number; // Required only for chefs
+    bio?: string; // Required only for chefs
+  };
   items: {
     _id: string;
     title: string;
@@ -11,8 +22,19 @@ export type OrderI = {
     price: number;
     discription: string;
     category: string;
-    createdBy: string;
-  }[];
+    createdBy: {
+      _id: string;
+      name: string;
+      email: string;
+      password: string;
+      address?: string; // Optional field
+      role: "chef" | "customer";
+      phone: string;
+      specialty?: string; // Required only for chefs
+      exp?: number; // Required only for chefs
+      bio?: string; // Required only for chefs
+    }
+  }[];  
 
   totalAmount: number;
   status: "pending" | "completed" | "canceled";

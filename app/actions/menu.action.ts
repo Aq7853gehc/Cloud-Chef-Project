@@ -78,7 +78,7 @@ export const getMenuByUser = async (userId: string): Promise<{
 }> => {
   await dbConnect();  
   try {
-    const result = await Menu.find({ createdBy: userId }).lean().exec();
+    const result = await Menu.find({ createdBy: userId }).populate("createdBy").lean().exec();
     if (!result || result.length === 0) {
       return { success: false, error: "No menu items found" };
     }

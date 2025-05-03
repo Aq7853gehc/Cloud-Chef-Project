@@ -4,7 +4,7 @@ import dbConnect from "@/lib/dbConnect";
 import { CartItem } from "../user/menu/page";
 import { Order } from "@/models/order.models";
 import { revalidatePath } from "next/cache";
-import { OrderI, IOrder } from "@/types/type";
+import { OrderI } from "@/types/type";
 
 type addOrderProps = {
   user: string;
@@ -36,15 +36,16 @@ export const getOrderDetail = async (
   userId: string
 ): Promise<{
   success: boolean;
-  data?: IOrder[];
+  data?: OrderI[];
   error?: string;
 }> => {
   await dbConnect();
   try {
     if (!userId) throw new Error("User id must be here");
-    const result = await Order.find({ user: userId }).populate("items").exec();
+    const result = await Order.find({ user: userId }).populate("items user").exec();
     if (!result) throw new Error("No data found");
     const plainText = JSON.parse(JSON.stringify(result));
+    console.log(plainText);
     return { success: true, data: plainText };
   } catch (error) {
     console.error(error);
@@ -63,7 +64,7 @@ export const getLatestOrders = async (
 
   try {
     const order = await Order.find({ user: userId })
-      .populate("items")
+      .populate("items user")
       .sort({ createdAt: -1 })
       .limit(1)
       .exec();
@@ -110,7 +111,7 @@ export const getAllOrder = async (): Promise<{
 }> => {
   await dbConnect();
   try {
-    const resp = await Order.find().populate("items").exec();
+    const resp = await Order.find().populate("items user").exec();
     if (!resp) throw new Error("Not Found");
     console.log(resp);
     return {
@@ -146,5 +147,22 @@ export const updateStatus = async (
   } catch (error) {
     console.error(error);
     return { success: false, message: `${error}` };
+  }
+};
+
+
+export const getTotalOrder = async (userId: string): Promise<{
+  success: boolean;
+  data?: number;
+  error?: string;
+}> => {
+  await dbConnect();
+  try {
+    const totalOrder = await Order.countDocuments({user: userId});
+    if (!totalOrder) throw new Error("No order found");
+    return { success: true, data: totalOrder };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: `${error}` };
   }
 };

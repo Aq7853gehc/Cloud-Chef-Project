@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
-import { IOrder } from "@/types/type";
+import {  OrderI } from "@/types/type";
 import { getOrderDetail, updateStatus } from "@/app/actions/order.action";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -147,7 +147,7 @@ export default function OrdersPage() {
   const [trackingInfo, setTrackingInfo] = useState<{ [key: string]: boolean }>(
     {}
   );
-  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [orders, setOrders] = useState<OrderI[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
   const fetchOrders = async () => {
