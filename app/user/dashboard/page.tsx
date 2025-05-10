@@ -1,5 +1,4 @@
 "use client";
-
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -41,6 +40,7 @@ import { redirect, useRouter } from "next/navigation";
 import { IUser, OrderI } from "@/types/type";
 import { getOrderDetail, getTotalOrder } from "@/app/actions/order.action";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getMenuByUser } from "@/app/actions/menu.action";
 
 const reviews = [
   {
@@ -100,6 +100,7 @@ export default function CustomerDashboard() {
         totalOrder(),
         getFavoriteChef(),
         getOrder(),
+        
       ]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -118,6 +119,7 @@ export default function CustomerDashboard() {
   const totalOrder = async () => {
     if (!session?.user._id) return;
     const result = await getTotalOrder(session?.user._id);
+    await getMenuByUser(session?.user._id);
     if (result.success) {
       setTotal(result.data || 0);
     }
