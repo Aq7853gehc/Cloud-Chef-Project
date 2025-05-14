@@ -1,9 +1,9 @@
 "use server";
 
 import dbConnect from "@/lib/dbConnect";
-import {  User } from "@/models/user.models";
+import { User } from "@/models/user.models";
 
-export const getuser = async (email:string) => {
+export const getuser = async (email: string) => {
   await dbConnect();
   if (!email) throw new Error("No email is there");
   try {
@@ -16,7 +16,6 @@ export const getuser = async (email:string) => {
     return { success: false, msg: error };
   }
 };
-
 
 export const getChefs = async () => {
   await dbConnect();
@@ -32,8 +31,6 @@ export const getChefs = async () => {
   }
 };
 
-
-
 export const getTotalChef = async () => {
   await dbConnect();
   try {
@@ -44,4 +41,16 @@ export const getTotalChef = async () => {
     console.error(error);
     return { success: false, msg: error };
   }
-};  
+};
+
+export const getTotalCustomer = async () => {
+  await dbConnect();
+  try {
+    const totalChef = await User.countDocuments({ role: "customer" });
+    if (!totalChef) throw new Error("No chef found");
+    return { success: true, data: totalChef };
+  } catch (error) {
+    console.error(error);
+    return { success: false, msg: error };
+  }
+};
